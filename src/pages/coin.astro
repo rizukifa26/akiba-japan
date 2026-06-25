@@ -1,0 +1,291 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const faqs = [
+  {
+    q: "アキバコインはどこで購入できますか？",
+    a: "加盟店舗のフロント、またはAKIBA JAPAN事務局にてご購入いただけます。現在はオンライン購入には対応しておりませんが、今後対応予定です。",
+  },
+  {
+    q: "アキバコインに有効期限はありますか？",
+    a: "発行日より1年間有効です。期限を過ぎたコインはご利用いただけませんので、お早めにご使用ください。",
+  },
+  {
+    q: "複数の加盟店舗でアキバコインを使えますか？",
+    a: "はい、AKIBA JAPAN加盟店舗であればどこでもご使用いただけます。加盟店一覧は「加盟店」ページよりご確認ください。",
+  },
+  {
+    q: "換金・返金は可能ですか？",
+    a: "アキバコインの現金への換金・返金は原則としてお断りしております。購入前に必要枚数をご確認のうえご購入ください。",
+  },
+  {
+    q: "コインをまとめて購入した場合、分けて使えますか？",
+    a: "はい、1枚単位からご利用いただけます。セット購入されたコインは1枚ずつ個別にご利用可能です。",
+  },
+];
+---
+
+<BaseLayout
+  title="Akiba Coin | AKIBA JAPAN"
+  description="AKIBA JAPANのコミュニティ通貨「Akiba Coin」。加盟店での割引・特典に使えるご当地通貨の仕組みと購入プランをご紹介します。"
+>
+
+  <!-- ─── HERO COIN ──────────────────────────────────── -->
+  <section class="relative bg-[#1a1a1a] overflow-hidden py-24 sm:py-32 border-b border-white/10">
+
+    <!-- Decorative ¥ background -->
+    <div
+      class="absolute inset-0 flex items-center justify-end pr-8 sm:pr-16 pointer-events-none select-none"
+      aria-hidden="true"
+    >
+      <span class="hero-yen text-white/[0.035] font-black leading-none">¥</span>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-5">Community Currency</p>
+        <h1 class="text-4xl sm:text-5xl font-black text-white leading-tight mb-6">
+          アキバコインとは？
+        </h1>
+        <p class="text-white/60 text-lg leading-relaxed mb-4">
+          「Akiba Coin（アキバコイン）」は、NPO法人国際AKIBA総合支援協会が発行する
+          秋葉原のコミュニティ通貨です。
+        </p>
+        <p class="text-white/60 text-lg leading-relaxed">
+          加盟店での買い物・サービス利用時に日本円の代わりとして使用でき、
+          通常購入より多くのコインが付与される先行販売プランで
+          お得に秋葉原の文化を体験していただけます。
+        </p>
+      </div>
+
+      <!-- Quick facts -->
+      <div class="mt-12 flex flex-wrap gap-6">
+        {[
+          { icon: "🏪", label: "加盟店全店で利用可" },
+          { icon: "🎁", label: "先行購入ボーナス付き" },
+          { icon: "📅", label: "有効期限1年" },
+        ].map(({ icon, label }) => (
+          <div class="flex items-center gap-2.5">
+            <span class="text-xl" aria-hidden="true">{icon}</span>
+            <span class="text-white/70 text-sm font-medium">{label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PRICING PLANS ─────────────────────────────── -->
+  <section class="py-20 bg-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="text-center mb-14">
+        <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">Purchase Plans</p>
+        <h2 class="text-3xl sm:text-4xl font-black text-white">購入プラン</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-2xl mx-auto">
+
+        <!-- Plan 1: 通常販売 -->
+        <div class="rounded-2xl border border-white/15 bg-white/[0.04] p-8 flex flex-col gap-5">
+          <div>
+            <span class="text-white/40 text-xs font-mono tracking-widest uppercase">通常販売</span>
+          </div>
+          <div>
+            <p class="text-white/50 text-sm mb-1">セット内容</p>
+            <p class="text-white font-black text-3xl font-mono">10<span class="text-lg ml-1 font-medium">枚</span></p>
+          </div>
+          <div class="border-t border-white/10 pt-5">
+            <p class="text-white/50 text-sm mb-1">価格</p>
+            <p class="text-white font-black text-4xl font-mono">
+              ¥<span class="ml-0.5">5,000</span>
+            </p>
+            <p class="text-white/35 text-xs font-mono mt-1">= 1枚あたり ¥500</p>
+          </div>
+          <a
+            href="/contact"
+            class="mt-auto inline-flex justify-center items-center gap-2 w-full px-6 py-3.5 rounded-lg border border-white/25 hover:border-white/50 hover:bg-white/5 text-white font-semibold text-sm transition-colors duration-200"
+          >
+            購入を問い合わせる
+          </a>
+        </div>
+
+        <!-- Plan 2: 先行販売 (FEATURED) -->
+        <div class="relative pt-5">
+          <!-- Overflow badge -->
+          <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap"
+            aria-label="先行販売プラン"
+          >
+            <span class="inline-flex items-center gap-1.5 bg-primary text-white text-xs font-bold tracking-wider px-4 py-1.5 rounded-full shadow-lg shadow-primary/30">
+              先行販売
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+                <path d="M6 1l1.236 2.504L10 3.882l-2 1.95.472 2.756L6 7.4l-2.472 1.188L4 6.832l-2-1.95 2.764-.378z"/>
+              </svg>
+            </span>
+          </div>
+
+          <!-- Card with red border -->
+          <div class="rounded-2xl border-2 border-primary bg-primary/5 p-8 flex flex-col gap-5 h-full shadow-xl shadow-primary/10">
+            <div class="flex items-center justify-between">
+              <span class="text-primary text-xs font-mono tracking-widest uppercase font-bold">先行販売プラン</span>
+              <span class="text-white/40 text-xs font-mono">〜9月末まで</span>
+            </div>
+            <div>
+              <p class="text-white/50 text-sm mb-1">セット内容</p>
+              <p class="text-white font-black text-3xl font-mono">
+                12<span class="text-lg ml-1 font-medium">枚</span>
+                <span class="text-primary text-base font-semibold ml-2">+2枚ボーナス</span>
+              </p>
+            </div>
+            <div class="border-t border-primary/30 pt-5">
+              <p class="text-white/50 text-sm mb-1">価格</p>
+              <p class="text-white font-black text-4xl font-mono">
+                ¥<span class="ml-0.5">5,000</span>
+              </p>
+              <p class="text-primary/70 text-xs font-mono mt-1">= 1枚あたり ¥416〜（お得！）</p>
+            </div>
+            <a
+              href="/contact"
+              class="mt-auto inline-flex justify-center items-center gap-2 w-full px-6 py-3.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-bold text-sm transition-colors duration-200 shadow-md shadow-primary/25"
+            >
+              先行販売で購入する
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HOW TO USE ────────────────────────────────── -->
+  <section class="py-20 bg-[#0a0a0a] border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="mb-14">
+        <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">How To Use</p>
+        <h2 class="text-3xl sm:text-4xl font-black text-white">使い方</h2>
+      </div>
+
+      <div class="rounded-2xl border border-white/10 bg-white/[0.03] py-16 flex flex-col items-center justify-center gap-3 text-center">
+        <p class="text-white/20 text-5xl">🪙</p>
+        <p class="text-white/60 font-bold text-base">コンテンツ準備中</p>
+        <p class="text-white/35 text-sm">詳細情報は近日公開予定です。</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── WARNING BOX ───────────────────────────────── -->
+  <section class="py-12 bg-[#0a0a0a]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="rounded-2xl bg-primary-pale border border-primary/25 px-8 py-6 flex items-start gap-5">
+        <div class="shrink-0 mt-0.5">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+            <path d="M11 2L2 19h18L11 2z" stroke="#c73d55" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M11 9v4" stroke="#c73d55" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="11" cy="15.5" r="0.8" fill="#c73d55"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-primary-dark font-bold text-sm mb-1.5">ご注意</p>
+          <p class="text-primary-dark/80 text-sm leading-relaxed">
+            アキバコインの店舗での保管はお断りしております。
+            コインは必ずお客様ご自身で保管してください。
+            <strong>紛失された場合の補償はございません。</strong>
+            大切に保管くださいますようお願いいたします。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ACCORDION ─────────────────────────────── -->
+  <section class="py-20 bg-black border-t border-white/10">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="mb-12">
+        <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">FAQ</p>
+        <h2 class="text-3xl sm:text-4xl font-black text-white">よくある質問</h2>
+      </div>
+
+      <div class="space-y-1" id="faq-list" role="list">
+        {faqs.map(({ q, a }, i) => (
+          <div
+            class="faq-item border-b border-white/10 last:border-b-0"
+            role="listitem"
+          >
+            <button
+              class="faq-trigger w-full flex items-center justify-between gap-4 py-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+              aria-expanded="false"
+              aria-controls={`faq-body-${i}`}
+              id={`faq-trigger-${i}`}
+            >
+              <span class="text-white font-semibold text-base pr-2">{q}</span>
+              <svg
+                class="faq-chevron shrink-0 transition-transform duration-300"
+                width="18" height="18" viewBox="0 0 18 18" fill="none"
+                aria-hidden="true"
+              >
+                <path d="M4.5 6.75L9 11.25l4.5-4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div
+              class="faq-body overflow-hidden"
+              id={`faq-body-${i}`}
+              role="region"
+              aria-labelledby={`faq-trigger-${i}`}
+              style="max-height: 0;"
+            >
+              <p class="text-white/60 text-sm leading-relaxed pb-5">
+                {a}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .hero-yen {
+    font-size: clamp(16rem, 40vw, 36rem);
+    line-height: 1;
+  }
+</style>
+
+<script>
+  // ── FAQ Accordion ──────────────────────────────────
+  const triggers = document.querySelectorAll<HTMLButtonElement>(".faq-trigger");
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      const body = trigger.nextElementSibling as HTMLElement | null;
+      if (!body) return;
+
+      const isOpen = trigger.getAttribute("aria-expanded") === "true";
+      const chevron = trigger.querySelector<SVGElement>(".faq-chevron");
+
+      // Close all
+      triggers.forEach((t) => {
+        const b = t.nextElementSibling as HTMLElement | null;
+        const c = t.querySelector<SVGElement>(".faq-chevron");
+        t.setAttribute("aria-expanded", "false");
+        if (b) b.style.maxHeight = "0";
+        if (c) c.style.transform = "";
+      });
+
+      // Open clicked item if it was closed
+      if (!isOpen) {
+        trigger.setAttribute("aria-expanded", "true");
+        body.style.maxHeight = body.scrollHeight + "px";
+        if (chevron) chevron.style.transform = "rotate(180deg)";
+      }
+    });
+  });
+</script>

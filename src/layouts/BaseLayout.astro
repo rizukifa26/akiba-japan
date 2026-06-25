@@ -1,0 +1,102 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import SchemaOrg from "../components/SchemaOrg.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  noIndex?: boolean;
+  noFooter?: boolean;
+}
+
+const {
+  title,
+  description = "NPO法人国際AKIBA総合支援協会 — 秋葉原の文化と国際交流をつなぐコミュニティ組織。",
+  ogTitle,
+  ogDescription,
+  ogImage = "/og-default.jpg",
+  noIndex = false,
+  noFooter = false,
+} = Astro.props;
+
+const SITE_NAME = "AKIBA JAPAN";
+const resolvedOgTitle = ogTitle ?? title;
+const resolvedOgDesc  = ogDescription ?? description;
+const canonicalURL    = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const ogImageURL      = new URL(ogImage, Astro.site ?? Astro.url.origin).toString();
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO core -->
+    <meta name="description" content={description} />
+    <meta name="robots" content={noIndex ? "noindex, nofollow" : "index, follow"} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:site_name"   content={SITE_NAME} />
+    <meta property="og:title"       content={resolvedOgTitle} />
+    <meta property="og:description" content={resolvedOgDesc} />
+    <meta property="og:image"       content={ogImageURL} />
+    <meta property="og:image:alt"   content={resolvedOgTitle} />
+    <meta property="og:url"         content={canonicalURL} />
+    <meta property="og:locale"      content="ja_JP" />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:site"        content="@akibajapannpo" />
+    <meta name="twitter:title"       content={resolvedOgTitle} />
+    <meta name="twitter:description" content={resolvedOgDesc} />
+    <meta name="twitter:image"       content={ogImageURL} />
+    <meta name="twitter:image:alt"   content={resolvedOgTitle} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Google Fonts: preconnect first, then stylesheet -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap"
+      />
+    </noscript>
+
+    <!-- JSON-LD schema -->
+    <SchemaOrg />
+
+    <slot name="head" />
+
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen flex flex-col bg-black text-white">
+    <Header />
+    <main class="flex-1" id="main-content">
+      <slot />
+    </main>
+    {!noFooter && <Footer />}
+  </body>
+</html>

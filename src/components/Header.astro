@@ -1,0 +1,107 @@
+---
+const navLinks = [
+  { href: "/", label: "ホーム" },
+  { href: "/about", label: "組織について" },
+  { href: "/shops", label: "加盟店" },
+  { href: "/coin", label: "Akiba Coin" },
+  { href: "/events", label: "イベント" },
+  { href: "/rules", label: "会員規則" },
+  { href: "/join", label: "会員登録" },
+  { href: "/contact", label: "お問い合わせ" },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 bg-black border-b border-white/10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2 shrink-0">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="32" height="32" rx="6" fill="#e8546a"/>
+          <path d="M8 24L16 8L24 24" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M10.5 19H21.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <span class="font-bold text-white text-lg tracking-tight leading-tight">
+          AKIBA<br class="hidden sm:block"/>
+          <span class="text-primary text-sm font-medium">JAPAN</span>
+        </span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-1" aria-label="メインナビゲーション">
+        {navLinks.map(({ href, label }) => (
+          <a
+            href={href}
+            class={`px-3 py-2 rounded text-sm transition-colors ${
+              currentPath === href
+                ? "text-primary font-medium"
+                : "text-white/70 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+
+      <!-- Mobile hamburger -->
+      <button
+        id="hamburger"
+        class="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+        aria-label="メニューを開く"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="hamburger-line block w-6 h-0.5 bg-white transition-all duration-300"></span>
+        <span class="hamburger-line block w-6 h-0.5 bg-white transition-all duration-300"></span>
+        <span class="hamburger-line block w-6 h-0.5 bg-white transition-all duration-300"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="lg:hidden hidden border-t border-white/10 bg-black"
+    role="navigation"
+    aria-label="モバイルナビゲーション"
+  >
+    <nav class="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
+      {navLinks.map(({ href, label }) => (
+        <a
+          href={href}
+          class={`px-3 py-2.5 rounded text-sm transition-colors ${
+            currentPath === href
+              ? "text-primary font-medium bg-primary/10"
+              : "text-white/70 hover:text-white hover:bg-white/5"
+          }`}
+        >
+          {label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<script>
+  const hamburger = document.getElementById("hamburger");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const lines = hamburger?.querySelectorAll(".hamburger-line");
+
+  hamburger?.addEventListener("click", () => {
+    const isOpen = mobileMenu?.classList.toggle("hidden") === false;
+    hamburger.setAttribute("aria-expanded", String(isOpen));
+
+    if (isOpen && lines) {
+      (lines[0] as HTMLElement).style.transform = "translateY(8px) rotate(45deg)";
+      (lines[1] as HTMLElement).style.opacity = "0";
+      (lines[2] as HTMLElement).style.transform = "translateY(-8px) rotate(-45deg)";
+    } else if (lines) {
+      (lines[0] as HTMLElement).style.transform = "";
+      (lines[1] as HTMLElement).style.opacity = "";
+      (lines[2] as HTMLElement).style.transform = "";
+    }
+  });
+</script>

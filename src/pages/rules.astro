@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pdfPath = "/%E4%BC%9A%E5%93%A1%E8%A6%8F%E7%B4%84.pdf";
+---
+
+<BaseLayout
+  title="会員規約 | AKIBA JAPAN"
+  description="NPO法人国際AKIBA総合支援協会の会員規約です。詳細はPDFをご確認ください。"
+>
+  <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-4">Membership Rules</p>
+    <h1 class="text-4xl sm:text-5xl font-black text-white mb-5 leading-tight">
+      会員規約
+    </h1>
+    <p class="text-white/55 text-lg max-w-2xl leading-relaxed mb-10">
+      AKIBA JAPANへの加盟・ご利用にあたっての規約です。<br />
+      内容をご確認のうえ、同意いただいた上でご登録をお願いいたします。
+    </p>
+
+    <!-- PDF download card -->
+    <div class="flex items-center gap-5 p-6 rounded-2xl border border-white/10 bg-white/[0.03] max-w-md">
+      <!-- PDF icon -->
+      <div class="shrink-0 w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-content:center justify-center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e8546a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-white font-semibold text-sm mb-0.5">会員規約.pdf</p>
+        <p class="text-white/35 text-xs">会員規約の全文はこちらから</p>
+      </div>
+      <a
+        href={pdfPath}
+        download="会員規約_AKIBA_JAPAN.pdf"
+        class="shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold text-xs transition-colors duration-200"
+      >
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        ダウンロード
+      </a>
+    </div>
+  </section>
+</BaseLayout>

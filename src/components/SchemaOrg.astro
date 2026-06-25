@@ -1,0 +1,30 @@
+---
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "NGO",
+  name: "NPO法人国際AKIBA総合支援協会",
+  alternateName: "AKIBA JAPAN",
+  url: "https://akiba-japan.jp",
+  logo: "https://akiba-japan.jp/favicon.svg",
+  description:
+    "秋葉原を拠点に地域の店舗・個人・企業をつなぎ、文化交流とコミュニティ通貨「Akiba Coin」を通じて持続可能な街づくりを推進するNPO法人。",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "千代田区",
+    addressRegion: "東京都",
+    addressCountry: "JP",
+  },
+  areaServed: {
+    "@type": "Place",
+    name: "秋葉原",
+  },
+  knowsLanguage: ["ja", "en"],
+  sameAs: [
+    "https://twitter.com/akibajapannpo",
+    "https://instagram.com/akibajapannpo",
+    "https://youtube.com/@akibajapannpo",
+  ],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

@@ -1,0 +1,398 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { shops, categories } from "../data/shops.js";
+---
+
+<BaseLayout
+  title="加盟店マップ | AKIBA JAPAN"
+  description="AKIBA JAPANに加盟している秋葉原・神田エリアの店舗マップ。Akiba Coin対応店舗を地図で探せます。"
+  noFooter={true}
+>
+  <Fragment slot="head">
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+  </Fragment>
+
+  <!-- ─── MAP LAYOUT ──────────────────────────────────────────── -->
+  <div class="flex flex-col md:flex-row" style="height: calc(100vh - 4rem);">
+
+    <!-- ─── SIDEBAR ─────────────────────────────────────────── -->
+    <aside
+      class="flex flex-col bg-[#0d0d0d] border-b md:border-b-0 md:border-r border-white/10 w-full md:w-[320px] shrink-0"
+      style="height: 45%; min-height: 0;"
+      id="shops-sidebar"
+    >
+      <!-- Sidebar header -->
+      <div class="px-4 pt-4 pb-3 border-b border-white/10 shrink-0">
+        <p class="text-primary font-mono text-[10px] tracking-[0.2em] uppercase mb-1">Member Shops</p>
+        <div class="flex items-baseline justify-between">
+          <h1 class="text-lg font-black text-white leading-tight">加盟店マップ</h1>
+          <span class="font-mono text-xs text-white/30">
+            <span id="visible-count">{shops.length}</span>店舗
+          </span>
+        </div>
+      </div>
+
+      <!-- Category filter -->
+      <div class="flex flex-wrap gap-1.5 px-3 py-2.5 border-b border-white/10 shrink-0">
+        {categories.map(({ value, label }) => (
+          <button
+            class="filter-btn px-3 py-1 rounded-full text-[11px] font-semibold border transition-all duration-200"
+            data-filter={value}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <!-- Shop list -->
+      <ul id="shops-list" class="flex-1 overflow-y-auto overscroll-contain">
+        {shops.map((shop) => (
+          <li>
+            <button
+              class="shop-item w-full text-left px-4 py-3 border-b border-white/[0.06] hover:bg-white/[0.04] transition-colors duration-150 group"
+              data-id={shop.id}
+              data-category={shop.category}
+            >
+              <div class="flex items-start justify-between gap-2 mb-1">
+                <span class="font-semibold text-white/90 text-[13px] leading-snug group-hover:text-white transition-colors">
+                  {shop.name}
+                </span>
+                {shop.featured && (
+                  <span class="shrink-0 text-[9px] font-bold tracking-widest uppercase bg-primary/20 text-primary border border-primary/30 rounded-full px-1.5 py-0.5">
+                    おすすめ
+                  </span>
+                )}
+              </div>
+              <div class="flex items-center gap-2">
+                <span class={`text-[10px] font-semibold rounded px-1.5 py-0.5 border ${
+                  shop.category === 'parts'     ? 'bg-sky-500/10 text-sky-400 border-sky-500/20' :
+                  shop.category === 'cafe'      ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
+                  shop.category === 'hobby'     ? 'bg-violet-500/10 text-violet-400 border-violet-500/20' :
+                                                  'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                }`}>
+                  {shop.categoryLabel}
+                </span>
+                <span class="text-[10px] text-white/30 italic">Coin 情報 準備中</span>
+              </div>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <!-- Sidebar footer CTA -->
+      <div class="px-4 py-3 border-t border-white/10 shrink-0">
+        <a
+          href="/join"
+          class="flex items-center justify-center gap-2 w-full py-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-xs font-semibold border border-primary/20 transition-colors duration-200"
+        >
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          店舗として参加する
+        </a>
+      </div>
+    </aside>
+
+    <!-- ─── MAP ──────────────────────────────────────────────── -->
+    <div id="map" class="flex-1" style="min-height: 0;"></div>
+
+  </div>
+</BaseLayout>
+
+<!-- Leaflet JS (must load before inline script below) -->
+<script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script is:inline define:vars={{ shops, categories }}>
+  // ── Map init ───────────────────────────────────────────────────
+  const map = L.map("map", {
+    center: [35.6985, 139.7718],
+    zoom: 15,
+    zoomControl: false,
+  });
+
+  L.control.zoom({ position: "bottomright" }).addTo(map);
+
+  L.tileLayer(
+    "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+    {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: "abcd",
+      maxZoom: 19,
+    }
+  ).addTo(map);
+
+  // ── Marker factory ─────────────────────────────────────────────
+  function makeIcon(featured, active) {
+    const size = featured ? 16 : 12;
+    const bg = active ? "#fff" : "#e8546a";
+    const border = active ? "#e8546a" : "#fff";
+    return L.divIcon({
+      html: `<div style="
+        width:${size}px;height:${size}px;
+        background:${bg};
+        border-radius:50%;
+        border:2px solid ${border};
+        box-shadow:0 0 0 2px #e8546a,0 2px 10px rgba(0,0,0,.6);
+        transition:transform .15s;
+      "></div>`,
+      className: "",
+      iconSize: [size, size],
+      iconAnchor: [size / 2, size / 2],
+      popupAnchor: [0, -(size / 2 + 6)],
+    });
+  }
+
+  // ── Popup content ──────────────────────────────────────────────
+  function popupHTML(shop) {
+    const catColor = {
+      parts: "#38bdf8",
+      cafe: "#fbbf24",
+      hobby: "#a78bfa",
+      community: "#34d399",
+    }[shop.category] || "#e8546a";
+
+    const photoIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="#ccc" stroke="none"/><path d="M21 15l-5-5-4 4-2-2-4 4"/></svg>`;
+
+    const slides = [1, 2, 3].map((n) => `
+      <div style="flex:0 0 100%;scroll-snap-align:start;height:160px;background:#f2f2f2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+        ${photoIcon}
+        <span style="font-size:10px;color:#c0c0c0;letter-spacing:.04em;">写真 ${n}</span>
+      </div>`).join("");
+
+    return `<div style="font-family:'Noto Sans JP',sans-serif;width:300px;">
+      <!-- Carousel -->
+      <div style="position:relative;border-radius:8px 8px 0 0;overflow:hidden;">
+        <div class="popup-carousel" style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;">
+          ${slides}
+        </div>
+        <!-- Prev -->
+        <button
+          onclick="this.closest('div').querySelector('.popup-carousel').scrollBy({left:-300,behavior:'smooth'})"
+          style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.88);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:#333;box-shadow:0 1px 4px rgba(0,0,0,.15);"
+        >&#8249;</button>
+        <!-- Next -->
+        <button
+          onclick="this.closest('div').querySelector('.popup-carousel').scrollBy({left:300,behavior:'smooth'})"
+          style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.88);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:#333;box-shadow:0 1px 4px rgba(0,0,0,.15);"
+        >&#8250;</button>
+        <!-- Slide count badge -->
+        <div style="position:absolute;bottom:8px;right:10px;background:rgba(0,0,0,.45);color:#fff;font-size:9px;padding:2px 7px;border-radius:20px;font-family:monospace;letter-spacing:.05em;">1 / 3</div>
+      </div>
+      <!-- Content -->
+      <div style="padding:12px 14px 14px;">
+        <div style="display:flex;align-items:center;gap:5px;margin-bottom:8px;">
+          <span style="font-size:10px;font-weight:700;color:${catColor};background:${catColor}15;border:1px solid ${catColor}30;border-radius:4px;padding:2px 7px;">${shop.categoryLabel}</span>
+          ${shop.featured ? '<span style="font-size:9px;font-weight:700;background:#e8546a;color:#fff;border-radius:4px;padding:2px 7px;letter-spacing:.04em;">おすすめ</span>' : ""}
+        </div>
+        <p style="font-size:15px;font-weight:700;color:#111;margin-bottom:6px;line-height:1.3;">${shop.name}</p>
+        <p style="font-size:12px;color:#777;line-height:1.6;">${shop.description}</p>
+      </div>
+    </div>`;
+  }
+
+  // ── Build markers ──────────────────────────────────────────────
+  const markerMap = {};
+  shops.forEach((shop) => {
+    const marker = L.marker([shop.lat, shop.lng], {
+      icon: makeIcon(shop.featured, false),
+    });
+    marker.bindPopup(popupHTML(shop), { maxWidth: 320, minWidth: 300 });
+    marker.on("click", () => selectShop(shop.id, false));
+    marker.addTo(map);
+    markerMap[shop.id] = { marker, shop };
+  });
+
+  // ── Select shop ────────────────────────────────────────────────
+  let activeId = null;
+
+  function selectShop(id, flyTo) {
+    // Reset previous
+    if (activeId && markerMap[activeId]) {
+      const prev = markerMap[activeId];
+      prev.marker.setIcon(makeIcon(prev.shop.featured, false));
+    }
+
+    activeId = id;
+    const entry = markerMap[id];
+    if (!entry) return;
+
+    // Activate marker icon
+    entry.marker.setIcon(makeIcon(entry.shop.featured, true));
+
+    // Sidebar highlight + scroll
+    document.querySelectorAll(".shop-item").forEach((el) => {
+      el.classList.toggle("shop-active", el.dataset.id === id);
+    });
+    const activeEl = document.querySelector(`.shop-item[data-id="${id}"]`);
+    if (activeEl) activeEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
+
+    // Map interaction
+    if (flyTo) {
+      map.flyTo([entry.shop.lat, entry.shop.lng], 17, { duration: 0.7 });
+      // open popup after fly completes
+      map.once("moveend", () => entry.marker.openPopup());
+    } else {
+      entry.marker.openPopup();
+    }
+  }
+
+  // Reset icon when popup closes
+  map.on("popupclose", () => {
+    if (activeId && markerMap[activeId]) {
+      markerMap[activeId].marker.setIcon(
+        makeIcon(markerMap[activeId].shop.featured, false)
+      );
+    }
+    document.querySelectorAll(".shop-item").forEach((el) =>
+      el.classList.remove("shop-active")
+    );
+    activeId = null;
+  });
+
+  // Sidebar click
+  document.querySelectorAll(".shop-item").forEach((btn) => {
+    btn.addEventListener("click", () => selectShop(btn.dataset.id, true));
+  });
+
+  // ── Carousel slide counter ─────────────────────────────────────
+  map.on("popupopen", () => {
+    const carousel = document.querySelector(".popup-carousel");
+    const badge = carousel?.parentElement?.querySelector("div:last-child");
+    if (!carousel || !badge) return;
+    const total = carousel.children.length;
+    carousel.addEventListener("scroll", () => {
+      const idx = Math.round(carousel.scrollLeft / carousel.offsetWidth) + 1;
+      badge.textContent = `${idx} / ${total}`;
+    });
+  });
+
+  // ── Category filter ────────────────────────────────────────────
+  const filterBtns = document.querySelectorAll(".filter-btn");
+  const countEl = document.getElementById("visible-count");
+
+  const ON  = ["bg-primary", "border-primary", "text-white"];
+  const OFF = ["bg-transparent", "border-white/20", "text-white/50",
+               "hover:border-white/40", "hover:text-white/80"];
+
+  function setFilterBtn(btn, active) {
+    if (active) {
+      btn.classList.remove(...OFF);
+      btn.classList.add(...ON);
+    } else {
+      btn.classList.remove(...ON);
+      btn.classList.add(...OFF);
+    }
+  }
+
+  function applyFilter(filter) {
+    let count = 0;
+    document.querySelectorAll(".shop-item").forEach((el) => {
+      const show = filter === "all" || el.dataset.category === filter;
+      el.parentElement.style.display = show ? "" : "none";
+      if (show) count++;
+      const id = el.dataset.id;
+      if (show) {
+        if (!map.hasLayer(markerMap[id].marker))
+          markerMap[id].marker.addTo(map);
+      } else {
+        if (map.hasLayer(markerMap[id].marker))
+          markerMap[id].marker.remove();
+      }
+    });
+    if (countEl) countEl.textContent = String(count);
+  }
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filterBtns.forEach((b) => setFilterBtn(b, false));
+      setFilterBtn(btn, true);
+      applyFilter(btn.dataset.filter);
+    });
+  });
+
+  // Init: activate "all"
+  const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+  if (allBtn) setFilterBtn(allBtn, true);
+  filterBtns.forEach((b) => {
+    if (b.dataset.filter !== "all") setFilterBtn(b, false);
+  });
+
+  // ── Mobile: fix map height after layout paint ──────────────────
+  function fixSidebarHeight() {
+    const sidebar = document.getElementById("shops-sidebar");
+    if (!sidebar) return;
+    if (window.innerWidth < 768) {
+      sidebar.style.height = "45%";
+    } else {
+      sidebar.style.height = "100%";
+    }
+    map.invalidateSize();
+  }
+  window.addEventListener("resize", fixSidebarHeight);
+  fixSidebarHeight();
+</script>
+
+<style>
+  .shop-active {
+    background-color: rgba(232, 84, 106, 0.08);
+    border-left: 2px solid #e8546a;
+    padding-left: calc(1rem - 2px);
+  }
+
+  :global(.leaflet-popup-content-wrapper) {
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    padding: 0;
+  }
+  :global(.leaflet-popup-content) {
+    margin: 0;
+  }
+  :global(.leaflet-popup-tip-container) {
+    display: none;
+  }
+  :global(.leaflet-popup-close-button) {
+    color: #888 !important;
+    top: 8px !important;
+    right: 10px !important;
+    font-size: 20px !important;
+    z-index: 10;
+  }
+  :global(.leaflet-popup-close-button:hover) {
+    color: #222 !important;
+  }
+  :global(.leaflet-control-zoom) {
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+    margin-bottom: 16px !important;
+    margin-right: 16px !important;
+  }
+  :global(.leaflet-control-zoom a) {
+    background-color: #1a1a1a !important;
+    color: #fff !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    width: 32px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    font-size: 16px !important;
+  }
+  :global(.leaflet-control-zoom a:hover) {
+    background-color: #2a2a2a !important;
+    color: #e8546a !important;
+  }
+  :global(.leaflet-control-attribution) {
+    background-color: rgba(0, 0, 0, 0.55) !important;
+    color: rgba(255, 255, 255, 0.35) !important;
+    font-size: 9px !important;
+  }
+  :global(.leaflet-control-attribution a) {
+    color: rgba(255, 255, 255, 0.45) !important;
+  }
+  :global(.popup-carousel::-webkit-scrollbar) {
+    display: none;
+  }
+</style>

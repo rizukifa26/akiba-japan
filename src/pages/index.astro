@@ -1,0 +1,301 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const stats = [
+  { value: "2024", label: "年設立" },
+  { value: "20+", label: "加盟店舗数" },
+  { value: "3種", label: "会員種別" },
+  { value: "∞", label: "可能性" },
+];
+
+const missions = [
+  {
+    number: "01",
+    title: "文化交流の架け橋",
+    desc: "秋葉原のサブカルチャーとポップカルチャーを国際的な観光客に伝え、世界とのリアルな文化交流を生み出します。",
+  },
+  {
+    number: "02",
+    title: "地域コミュニティの活性化",
+    desc: "地元の店舗・個人・企業が連携し、秋葉原全体の魅力と活力を高める持続可能なプラットフォームを構築します。",
+  },
+  {
+    number: "03",
+    title: "Akiba Coinエコシステム",
+    desc: "コミュニティ通貨「Akiba Coin」を通じて加盟店と会員をつなぎ、地域内で循環する独自の経済圏を育てます。",
+  },
+];
+
+const coinPackages = [
+  { label: "スターター", price: "¥1,000", coins: "1,100 AC", note: "10%ボーナス" },
+  { label: "レギュラー", price: "¥5,000", coins: "6,000 AC", note: "20%ボーナス", featured: true },
+  { label: "プレミアム", price: "¥10,000", coins: "13,000 AC", note: "30%ボーナス" },
+];
+---
+
+<BaseLayout
+  title="AKIBA JAPAN — 秋葉原から世界へ"
+  description="NPO法人国際AKIBA総合支援協会。秋葉原の文化と国際交流をつなぎ、コミュニティ通貨Akiba Coinで地域を活性化するNPO組織です。"
+>
+
+  <!-- ─── SECTION 1: HERO ─────────────────────────────── -->
+  <section id="hero" class="relative flex flex-col justify-center overflow-hidden bg-black min-h-[calc(100vh-4rem)]">
+
+    <!-- Grid pattern -->
+    <div class="hero-grid absolute inset-0" aria-hidden="true"></div>
+    <!-- Radial gradient overlay -->
+    <div class="hero-glow absolute inset-0" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-24 flex flex-col justify-between gap-16">
+
+      <!-- Main content -->
+      <div class="max-w-3xl">
+
+        <!-- Eyebrow -->
+        <div class="flex items-center gap-2.5 mb-8">
+          <span class="w-2 h-2 rounded-full bg-primary animate-pulse shrink-0" aria-hidden="true"></span>
+          <span class="text-primary font-mono text-xs tracking-[0.2em] uppercase">NPO法人 設立</span>
+        </div>
+
+        <!-- H1 -->
+        <h1 class="hero-heading font-black leading-[1.05] tracking-tight mb-7">
+          秋葉原を、<span class="text-primary">世界</span>へ。<br/>
+          地域へ、未来を。
+        </h1>
+
+        <!-- Lead -->
+        <p class="text-white/55 text-lg sm:text-xl leading-relaxed max-w-2xl mb-10">
+          NPO法人国際AKIBA総合支援協会は、秋葉原を拠点に地域の店舗・個人・企業をつなぎ、
+          文化交流とコミュニティ通貨「Akiba Coin」を通じて持続可能な街づくりを推進しています。
+        </p>
+
+        <!-- CTA buttons -->
+        <div class="flex flex-wrap gap-4">
+          <a
+            href="/join"
+            class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold text-sm transition-colors duration-200 shadow-lg shadow-primary/20"
+          >
+            会員として参加する
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a
+            href="/about"
+            class="inline-flex items-center px-7 py-3.5 rounded-lg border border-white/30 hover:border-white/60 hover:bg-white/5 text-white font-semibold text-sm transition-colors duration-200"
+          >
+            詳しく見る
+          </a>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="border-t border-white/10 pt-8">
+        <dl class="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-0 sm:divide-x sm:divide-white/10">
+          {stats.map(({ value, label }) => (
+            <div class="sm:px-8 first:pl-0 last:pr-0">
+              <dt class="text-white/40 text-xs tracking-widest uppercase mb-1">{label}</dt>
+              <dd class="text-white font-mono font-bold text-3xl sm:text-4xl leading-none">{value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── SECTION 2: MISSION ─────────────────────────── -->
+  <section id="mission" class="py-24 bg-[#0a0a0a]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Section header -->
+      <div class="mb-14">
+        <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">Our Mission</p>
+        <h2 class="text-3xl sm:text-4xl font-black text-white">私たちの使命</h2>
+      </div>
+
+      <!-- Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {missions.map(({ number, title, desc }) => (
+          <article class="bg-white rounded-2xl p-8 flex flex-col gap-5 group hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <div class="flex items-center gap-3">
+              <span class="text-primary font-mono text-xs font-bold tracking-widest">MISSION</span>
+              <span class="font-mono text-2xl font-black text-black/10">{number}</span>
+            </div>
+            <h3 class="text-black font-black text-xl leading-tight">{title}</h3>
+            <p class="text-black/60 text-sm leading-relaxed flex-1">{desc}</p>
+            <div class="w-8 h-0.5 bg-primary group-hover:w-16 transition-all duration-300 rounded-full"></div>
+          </article>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── SECTION 3: ABOUT TEASER ───────────────────── -->
+  <section id="about-teaser" class="py-24 bg-surface">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+
+        <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-4">About Us</p>
+        <h2 class="text-3xl sm:text-4xl font-black text-black leading-tight mb-6">
+          秋葉原から生まれた、<br/>
+          コミュニティのための組織
+        </h2>
+        <p class="text-black/60 text-base sm:text-lg leading-relaxed mb-4">
+          NPO法人国際AKIBA総合支援協会（AKIBA JAPAN）は2024年に設立されたNPO法人です。
+          秋葉原を訪れる国内外の旅行者と地域の店舗・コミュニティをつなぐことで、
+          この街がもつ独自の魅力を最大限に引き出すことを目的としています。
+        </p>
+        <p class="text-black/60 text-base sm:text-lg leading-relaxed mb-10">
+          個人会員・店舗会員・法人会員の3種類の会員制度を通じて、誰もが秋葉原の発展に参加できる
+          オープンなプラットフォームを提供しています。
+        </p>
+
+        <a
+          href="/about"
+          class="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all duration-200 group"
+        >
+          もっと読む
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SECTION 4: COIN TEASER ────────────────────── -->
+  <section id="coin-teaser" class="py-24 bg-black relative overflow-hidden">
+
+    <!-- Decorative coin glow -->
+    <div class="absolute top-1/2 right-0 -translate-y-1/2 w-96 h-96 rounded-full bg-primary/5 blur-3xl" aria-hidden="true"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+        <!-- Left: description -->
+        <div>
+          <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-4">Community Currency</p>
+          <h2 class="text-3xl sm:text-4xl font-black text-white leading-tight mb-6">
+            Akiba Coin —<br/>
+            <span class="text-white/50">地域をつなぐ通貨</span>
+          </h2>
+          <p class="text-white/55 text-base sm:text-lg leading-relaxed mb-6">
+            「Akiba Coin（AC）」は、AKIBA JAPANが発行するコミュニティ通貨です。
+            加盟店での買い物や活動への参加でコインを獲得・使用でき、
+            地域内に独自の経済循環を生み出します。
+          </p>
+          <ul class="space-y-3 mb-10">
+            {[
+              "加盟店全店でそのまま使える",
+              "購入額に応じたボーナスコイン付与",
+              "イベント参加でコインを獲得",
+            ].map((item) => (
+              <li class="flex items-start gap-3 text-white/70 text-sm">
+                <svg class="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <circle cx="8" cy="8" r="7" stroke="#e8546a" stroke-width="1.5"/>
+                  <path d="M5 8l2 2 4-4" stroke="#e8546a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                {item}
+              </li>
+            ))}
+          </ul>
+          <a
+            href="/coin"
+            class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm transition-colors duration-200"
+          >
+            Akiba Coinを詳しく見る
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Right: simple coin info -->
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-8 flex flex-col gap-6 text-white">
+          <p class="text-xl font-black leading-snug">今すぐ使える！<br/><span class="text-white/60 font-semibold text-base">1枚から使えます。現在ロンドベルにて販売中！</span></p>
+
+          <div class="border-t border-white/10 pt-6 flex flex-col gap-2">
+            <p class="font-bold text-sm text-primary flex items-center gap-2">🍽️ 使用方法</p>
+            <p class="text-white/70 text-sm leading-relaxed">飲み放題以外の飲み物・追加フードに使用できます。</p>
+          </div>
+
+          <div class="border-t border-white/10 pt-6 flex flex-col gap-2">
+            <p class="font-bold text-sm text-primary flex items-center gap-2">💡 使用例</p>
+            <p class="text-white/70 text-sm leading-relaxed">
+              ドリンク1杯 通常500円（税抜）→<br/>
+              <span class="text-white font-semibold">ドリンク1杯 500円（税込）で利用可能！</span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SECTION 5: CTA FINAL ──────────────────────── -->
+  <section id="cta-final" class="py-24 bg-primary relative overflow-hidden">
+
+    <!-- Decorative background shapes -->
+    <div class="absolute top-0 right-0 w-72 h-72 rounded-full bg-white/5 -translate-y-1/2 translate-x-1/4" aria-hidden="true"></div>
+    <div class="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-black/10 translate-y-1/2 -translate-x-1/4" aria-hidden="true"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+
+      <p class="text-white/70 font-mono text-xs tracking-[0.2em] uppercase mb-5">Join Us</p>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-5">
+        一緒に秋葉原を<br/>盛り上げましょう。
+      </h2>
+      <p class="text-white/75 text-lg max-w-xl mx-auto mb-12 leading-relaxed">
+        個人・店舗・法人、どなたでも参加できます。<br/>
+        あなたの力で秋葉原の未来をつくる第一歩を。
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-4">
+        <a
+          href="/join"
+          class="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-white text-primary hover:bg-white/90 font-bold text-sm transition-colors duration-200 shadow-lg"
+        >
+          個人会員として登録
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a
+          href="/join"
+          class="inline-flex items-center gap-2 px-8 py-4 rounded-lg border-2 border-white/60 hover:border-white hover:bg-white/10 text-white font-bold text-sm transition-colors duration-200"
+        >
+          法人・店舗として参加
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .hero-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .hero-glow {
+    background:
+      radial-gradient(ellipse at 85% 35%, rgba(232, 84, 106, 0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 8% 80%, rgba(0, 210, 200, 0.09) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 0%, rgba(232, 84, 106, 0.06) 0%, transparent 40%);
+  }
+
+  .hero-heading {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+  }
+</style>

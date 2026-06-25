@@ -1,0 +1,484 @@
+---
+// SETUP FORMSPREE:
+// 1. Daftar di formspree.io (gratis, tidak perlu kartu kredit)
+// 2. Klik "New Form" → beri nama → copy Form ID (format: xxxxxxxx)
+// 3. Ganti PLACEHOLDER_ID di bawah dengan Form ID kamu
+// 4. Verifikasi email yang masuk lewat dashboard Formspree
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const FORMSPREE_ID = "xdavdkyk";
+
+const inquiryTypes = [
+  { value: "", label: "お問い合わせの種類を選択" },
+  { value: "general", label: "一般的なお問い合わせ" },
+  { value: "membership", label: "会員について" },
+  { value: "coin", label: "アキバコインについて" },
+  { value: "media", label: "取材・メディア" },
+];
+
+const contactInfo = [
+  {
+    icon: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="5" width="15" height="10" rx="2" stroke="#e8546a" stroke-width="1.5"/><path d="M2.5 7l7.5 5 7.5-5" stroke="#e8546a" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+    label: "メールアドレス",
+    value: "info@akiba-japan.or.jp",
+    note: "通常2〜3営業日以内に返信します",
+  },
+  {
+    icon: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 3h3l1.5 4-1.75 1.25a9 9 0 004 4L12 10.5l4 1.5v3a1 1 0 01-1 1C7.163 16 3 11.837 3 4a1 1 0 011-1z" stroke="#e8546a" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
+    label: "電話番号",
+    value: "03-XXXX-XXXX",
+    note: "平日 10:00〜18:00（土日祝除く）",
+  },
+  {
+    icon: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2C7.238 2 5 4.238 5 7c0 4 5 11 5 11s5-7 5-11c0-2.762-2.238-5-5-5z" stroke="#e8546a" stroke-width="1.5"/><circle cx="10" cy="7" r="1.5" stroke="#e8546a" stroke-width="1.5"/></svg>`,
+    label: "所在地",
+    value: "東京都千代田区外神田",
+    note: "〒101-XXXX 秋葉原エリア",
+  },
+];
+
+const sns = [
+  {
+    label: "X (Twitter)",
+    href: "#",
+    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
+  },
+  {
+    label: "Instagram",
+    href: "#",
+    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`,
+  },
+  {
+    label: "YouTube",
+    href: "#",
+    icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`,
+  },
+];
+---
+
+<BaseLayout
+  title="お問い合わせ | AKIBA JAPAN"
+  description="AKIBA JAPANへのお問い合わせ。会員登録・アキバコイン・取材依頼など、お気軽にご連絡ください。"
+>
+
+  <!-- ─── PAGE HEADER ─────────────────────────────────── -->
+  <section class="bg-black border-b border-white/10 py-16 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-4">Contact</p>
+      <h1 class="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight">お問い合わせ</h1>
+      <p class="text-white/55 text-lg max-w-xl leading-relaxed">
+        ご質問・ご相談はフォームよりお気軽にどうぞ。<br/>
+        通常2〜3営業日以内にご返信いたします。
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── MAIN CONTENT: 2-COLUMN ────────────────────── -->
+  <section class="py-16 bg-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-12 lg:gap-16">
+
+        <!-- ── LEFT: FORM ──────────────────────────────── -->
+        <div>
+
+          <!-- Success state (hidden by default) -->
+          <div
+            id="form-success"
+            class="hidden rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-8 py-10 text-center"
+            role="alert"
+            aria-live="polite"
+          >
+            <div class="w-14 h-14 rounded-full bg-emerald-500/15 flex items-center justify-center mx-auto mb-5">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                <circle cx="14" cy="14" r="12" stroke="#10b981" stroke-width="1.8"/>
+                <path d="M8.5 14.5l4 4 7-8" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h2 class="text-white font-black text-xl mb-2">送信が完了しました</h2>
+            <p class="text-white/60 text-sm leading-relaxed">
+              お問い合わせありがとうございます。<br/>
+              2〜3営業日以内にご登録のメールアドレスへご返信いたします。
+            </p>
+          </div>
+
+          <!-- Error banner (hidden by default) -->
+          <div
+            id="form-error-banner"
+            class="hidden rounded-xl border border-primary/30 bg-primary/10 px-5 py-4 mb-6 flex items-start gap-3"
+            role="alert"
+            aria-live="assertive"
+          >
+            <svg class="shrink-0 mt-0.5" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <path d="M9 2L1.5 15.5h15L9 2z" stroke="#e8546a" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M9 8v3" stroke="#e8546a" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="9" cy="13" r="0.7" fill="#e8546a"/>
+            </svg>
+            <p class="text-primary text-sm">送信に失敗しました。しばらくしてから再度お試しください。</p>
+          </div>
+
+          <!-- Contact form -->
+          <form
+            id="contact-form"
+            action={`https://formspree.io/f/${FORMSPREE_ID}`}
+            method="POST"
+            novalidate
+            class="space-y-6"
+          >
+            <!-- Hidden: language hint for Formspree -->
+            <input type="hidden" name="_language" value="ja" />
+
+            <!-- お名前 -->
+            <div class="form-group">
+              <label for="name" class="form-label">
+                お名前
+                <span class="text-primary ml-1 text-xs">必須</span>
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                autocomplete="name"
+                placeholder="山田 太郎"
+                class="form-input"
+                required
+                aria-required="true"
+                aria-describedby="name-error"
+              />
+              <p id="name-error" class="form-error hidden" role="alert">お名前を入力してください。</p>
+            </div>
+
+            <!-- メールアドレス -->
+            <div class="form-group">
+              <label for="email" class="form-label">
+                メールアドレス
+                <span class="text-primary ml-1 text-xs">必須</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                autocomplete="email"
+                placeholder="taro@example.com"
+                class="form-input"
+                required
+                aria-required="true"
+                aria-describedby="email-error"
+              />
+              <p id="email-error" class="form-error hidden" role="alert">有効なメールアドレスを入力してください。</p>
+            </div>
+
+            <!-- 件名 -->
+            <div class="form-group">
+              <label for="subject" class="form-label">
+                件名
+                <span class="text-primary ml-1 text-xs">必須</span>
+              </label>
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                placeholder="お問い合わせの件名"
+                class="form-input"
+                required
+                aria-required="true"
+                aria-describedby="subject-error"
+              />
+              <p id="subject-error" class="form-error hidden" role="alert">件名を入力してください。</p>
+            </div>
+
+            <!-- お問い合わせの種類 -->
+            <div class="form-group">
+              <label for="type" class="form-label">お問い合わせの種類</label>
+              <div class="relative">
+                <select
+                  id="type"
+                  name="inquiry_type"
+                  class="form-input appearance-none pr-10 cursor-pointer"
+                >
+                  {inquiryTypes.map(({ value, label }) => (
+                    <option value={value}>{label}</option>
+                  ))}
+                </select>
+                <!-- Custom chevron -->
+                <div class="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-white/40">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- メッセージ -->
+            <div class="form-group">
+              <label for="message" class="form-label">
+                メッセージ
+                <span class="text-primary ml-1 text-xs">必須</span>
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows="6"
+                placeholder="お問い合わせ内容をご記入ください..."
+                class="form-input resize-y min-h-[120px]"
+                required
+                aria-required="true"
+                aria-describedby="message-error"
+              ></textarea>
+              <p id="message-error" class="form-error hidden" role="alert">メッセージを入力してください。</p>
+            </div>
+
+            <!-- Privacy notice -->
+            <p class="text-white/35 text-xs leading-relaxed">
+              送信いただいた情報は、お問い合わせへの回答にのみ使用します。
+              第三者への提供は行いません。
+            </p>
+
+            <!-- Submit -->
+            <button
+              type="submit"
+              id="submit-btn"
+              class="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-lg bg-primary hover:bg-primary-dark disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-sm transition-colors duration-200 shadow-lg shadow-primary/20"
+            >
+              <span id="submit-label">送信する</span>
+              <svg id="submit-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <!-- Loading spinner (hidden) -->
+              <svg id="submit-spinner" class="hidden animate-spin" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" stroke-dasharray="28" stroke-dashoffset="10" stroke-linecap="round"/>
+              </svg>
+            </button>
+
+          </form>
+        </div>
+
+        <!-- ── RIGHT: CONTACT INFO ─────────────────────── -->
+        <aside class="space-y-5">
+
+          <h2 class="text-white font-black text-xl mb-6">連絡先情報</h2>
+
+          <!-- Info cards -->
+          {contactInfo.map(({ icon, label, value, note }) => (
+            <div class="rounded-xl bg-white/[0.04] border border-white/10 p-5 flex items-start gap-4">
+              <div
+                class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0"
+                set:html={icon}
+                aria-hidden="true"
+              />
+              <div class="min-w-0">
+                <p class="text-white/40 text-xs uppercase tracking-widest font-mono mb-1">{label}</p>
+                <p class="text-white font-semibold text-sm break-all">{value}</p>
+                <p class="text-white/40 text-xs mt-1 leading-relaxed">{note}</p>
+              </div>
+            </div>
+          ))}
+
+          <!-- SNS card -->
+          <div class="rounded-xl bg-white/[0.04] border border-white/10 p-5">
+            <p class="text-white/40 text-xs uppercase tracking-widest font-mono mb-4">SNS</p>
+            <div class="flex items-center gap-3">
+              {sns.map(({ label, href, icon }) => (
+                <a
+                  href={href}
+                  aria-label={label}
+                  class="w-10 h-10 rounded-lg bg-white/5 hover:bg-primary/15 border border-white/10 hover:border-primary/40 flex items-center justify-center text-white/50 hover:text-primary transition-all duration-200"
+                  set:html={icon}
+                />
+              ))}
+            </div>
+          </div>
+
+          <!-- Office hours -->
+          <div class="rounded-xl border border-white/10 p-5">
+            <p class="text-white/40 text-xs uppercase tracking-widest font-mono mb-3">受付時間</p>
+            <dl class="space-y-1.5 text-sm">
+              <div class="flex justify-between">
+                <dt class="text-white/50">平日</dt>
+                <dd class="text-white font-mono">10:00 – 18:00</dd>
+              </div>
+              <div class="flex justify-between">
+                <dt class="text-white/50">土日祝</dt>
+                <dd class="text-white/30 font-mono">休業</dd>
+              </div>
+            </dl>
+          </div>
+
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-input {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 0.625rem;
+    color: #ffffff;
+    font-size: 0.9375rem;
+    font-family: inherit;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  .form-input::placeholder {
+    color: rgba(255,255,255,0.2);
+  }
+
+  .form-input:focus {
+    border-color: #e8546a;
+    background: rgba(232,84,106,0.05);
+    box-shadow: 0 0 0 3px rgba(232,84,106,0.12);
+  }
+
+  .form-input.is-error {
+    border-color: #e8546a;
+    background: rgba(232,84,106,0.07);
+  }
+
+  .form-error {
+    margin-top: 0.375rem;
+    font-size: 0.8rem;
+    color: #e8546a;
+  }
+
+  select.form-input option {
+    background: #1a1a1a;
+    color: #ffffff;
+  }
+</style>
+
+<script>
+  // ── Types ───────────────────────────────────────────
+  interface ValidationRule {
+    test: (val: string) => boolean;
+    errorId: string;
+  }
+
+  // ── Elements ────────────────────────────────────────
+  const form          = document.getElementById("contact-form") as HTMLFormElement | null;
+  const successBox    = document.getElementById("form-success");
+  const errorBanner   = document.getElementById("form-error-banner");
+  const submitBtn     = document.getElementById("submit-btn") as HTMLButtonElement | null;
+  const submitLabel   = document.getElementById("submit-label");
+  const submitArrow   = document.getElementById("submit-arrow");
+  const submitSpinner = document.getElementById("submit-spinner");
+
+  if (!form) throw new Error("contact-form not found");
+
+  // ── Validation rules ────────────────────────────────
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const rules: Record<string, ValidationRule> = {
+    name:    { test: (v) => v.trim().length > 0,    errorId: "name-error" },
+    email:   { test: (v) => EMAIL_RE.test(v.trim()), errorId: "email-error" },
+    subject: { test: (v) => v.trim().length > 0,    errorId: "subject-error" },
+    message: { test: (v) => v.trim().length > 0,    errorId: "message-error" },
+  };
+
+  function getField(name: string): HTMLInputElement | HTMLTextAreaElement | null {
+    return form!.querySelector(`[name="${name}"]`);
+  }
+
+  function showError(fieldName: string): void {
+    const field = getField(fieldName);
+    const errEl = document.getElementById(rules[fieldName].errorId);
+    field?.classList.add("is-error");
+    errEl?.classList.remove("hidden");
+  }
+
+  function clearError(fieldName: string): void {
+    const field = getField(fieldName);
+    const errEl = document.getElementById(rules[fieldName].errorId);
+    field?.classList.remove("is-error");
+    errEl?.classList.add("hidden");
+  }
+
+  function validateAll(): boolean {
+    let valid = true;
+    for (const [name, rule] of Object.entries(rules)) {
+      const field = getField(name);
+      const value = (field as HTMLInputElement)?.value ?? "";
+      if (!rule.test(value)) {
+        showError(name);
+        valid = false;
+      } else {
+        clearError(name);
+      }
+    }
+    return valid;
+  }
+
+  // Clear error on input
+  for (const name of Object.keys(rules)) {
+    const field = getField(name);
+    field?.addEventListener("input", () => clearError(name));
+    field?.addEventListener("blur", () => {
+      const value = (field as HTMLInputElement).value;
+      if (!rules[name].test(value)) showError(name);
+    });
+  }
+
+  // ── Loading state helpers ────────────────────────────
+  function setLoading(loading: boolean): void {
+    if (!submitBtn || !submitLabel || !submitArrow || !submitSpinner) return;
+    submitBtn.disabled = loading;
+    submitLabel.textContent = loading ? "送信中..." : "送信する";
+    submitArrow.classList.toggle("hidden", loading);
+    submitSpinner.classList.toggle("hidden", !loading);
+  }
+
+  // ── Form submit via fetch ────────────────────────────
+  form.addEventListener("submit", async (e: Event) => {
+    e.preventDefault();
+
+    // Clear banners
+    errorBanner?.classList.add("hidden");
+
+    if (!validateAll()) {
+      // Scroll to first error field
+      const firstError = form.querySelector<HTMLElement>(".is-error");
+      firstError?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const data = new FormData(form);
+      const res  = await fetch(form.action, {
+        method:  "POST",
+        body:    data,
+        headers: { Accept: "application/json" },
+      });
+
+      if (res.ok) {
+        form.classList.add("hidden");
+        successBox?.classList.remove("hidden");
+        successBox?.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else {
+        errorBanner?.classList.remove("hidden");
+        errorBanner?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    } catch {
+      errorBanner?.classList.remove("hidden");
+      errorBanner?.scrollIntoView({ behavior: "smooth", block: "center" });
+    } finally {
+      setLoading(false);
+    }
+  });
+</script>
