@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>加盟店の追加方法 — AKIBA JAPAN</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #1a1a1a;
+      background: #fff;
+      padding: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* ── Cover ── */
+    .cover {
+      text-align: center;
+      padding: 60px 0 50px;
+      border-bottom: 3px solid #e8546a;
+      margin-bottom: 40px;
+    }
+    .cover .badge {
+      display: inline-block;
+      background: #e8546a;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    .cover h1 {
+      font-size: 28px;
+      font-weight: 900;
+      color: #111;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+    .cover p {
+      font-size: 13px;
+      color: #666;
+    }
+
+    /* ── Section ── */
+    .section {
+      margin-bottom: 40px;
+    }
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #e8546a;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 17px;
+      font-weight: 900;
+      color: #111;
+    }
+    .step-sub {
+      font-size: 12px;
+      color: #888;
+      font-weight: 400;
+    }
+
+    p { margin-bottom: 10px; color: #333; }
+
+    /* ── Code block ── */
+    pre {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      border-radius: 8px;
+      padding: 18px 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin: 14px 0;
+      white-space: pre;
+    }
+    .cm  { color: #6a9955; } /* comment green */
+    .ky  { color: #569cd6; } /* keyword blue */
+    .st  { color: #ce9178; } /* string orange */
+    .nm  { color: #b5cea8; } /* number green */
+    .kw  { color: #c586c0; } /* keyword purple */
+
+    /* ── Field table ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 12px;
+    }
+    thead tr {
+      background: #e8546a;
+      color: #fff;
+    }
+    thead th {
+      padding: 9px 12px;
+      text-align: left;
+      font-weight: 700;
+    }
+    tbody tr:nth-child(even) { background: #fdf5f6; }
+    tbody tr:nth-child(odd)  { background: #fff; }
+    tbody td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #f0e0e2;
+      vertical-align: top;
+    }
+    td code {
+      font-family: 'Courier New', monospace;
+      background: #f4f4f4;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 11px;
+      color: #c0392b;
+    }
+
+    /* ── Info box ── */
+    .info {
+      background: #fff8e6;
+      border-left: 4px solid #f5a623;
+      border-radius: 0 6px 6px 0;
+      padding: 12px 16px;
+      margin: 14px 0;
+      font-size: 12px;
+      color: #555;
+    }
+    .info strong { color: #c07000; }
+
+    .warn {
+      background: #fff0f2;
+      border-left: 4px solid #e8546a;
+      border-radius: 0 6px 6px 0;
+      padding: 12px 16px;
+      margin: 14px 0;
+      font-size: 12px;
+      color: #555;
+    }
+    .warn strong { color: #c0354a; }
+
+    /* ── Folder tree ── */
+    .tree {
+      background: #f7f7f7;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 2;
+      margin: 14px 0;
+    }
+    .tree .folder { color: #2980b9; font-weight: 700; }
+    .tree .file   { color: #27ae60; }
+    .tree .note   { color: #999; }
+
+    /* ── Result table ── */
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 12px;
+    }
+    .result-table th {
+      background: #f4f4f4;
+      padding: 8px 14px;
+      border: 1px solid #ddd;
+      font-weight: 700;
+    }
+    .result-table td {
+      padding: 9px 14px;
+      border: 1px solid #ddd;
+    }
+    .tag-green {
+      background: #e8f8f1;
+      color: #1a7a4a;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .tag-gray {
+      background: #f2f2f2;
+      color: #666;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* ── Divider ── */
+    hr {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 36px 0;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #bbb;
+      padding-top: 30px;
+      border-top: 1px solid #eee;
+      margin-top: 50px;
+    }
+
+    @media print {
+      body { padding: 20px; }
+      .section { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Cover ── -->
+  <div class="cover">
+    <div class="badge">AKIBA JAPAN — 開発ガイド</div>
+    <h1>加盟店の追加方法</h1>
+    <p>店舗データ・写真・地図マーカーを追加する手順書</p>
+    <p style="margin-top:8px;font-size:11px;color:#bbb;">対象ファイル：src/data/shops.js　／　src/pages/shops.astro</p>
+  </div>
+
+
+  <!-- ── STEP 1 ── -->
+  <div class="section">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">写真をプロジェクトに保存する</div>
+        <div class="step-sub">public/ フォルダに画像ファイルを配置</div>
+      </div>
+    </div>
+
+    <p>プロジェクトの <code style="background:#f4f4f4;padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;color:#c0392b;">public/</code> フォルダ内に <strong>shops</strong> というサブフォルダを作り、そこに写真を入れてください。</p>
+
+    <div class="tree">
+      <span class="folder">public/</span><br>
+      &nbsp;&nbsp;<span class="folder">shops/</span><span class="note">　← このフォルダを新規作成</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">お店の名前-1.jpg</span><span class="note">　← 写真1枚目</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">お店の名前-2.jpg</span><span class="note">　← 写真2枚目</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">お店の名前-3.jpg</span><span class="note">　← 写真3枚目（任意）</span>
+    </div>
+
+    <div class="info">
+      <strong>ファイル名のルール：</strong><br>
+      日本語・スペースは使わないでください。半角英数字とハイフンのみ使用します。<br>
+      例：<code>akiba-shokudo-1.jpg</code>　✓ &nbsp;&nbsp;　<code>アキバ食堂 写真1.jpg</code>　✗
+    </div>
+
+    <div class="info">
+      <strong>推奨フォーマット：</strong><br>
+      横長（landscape）の JPG または WebP。1枚あたり 500KB 以下を目安にしてください。
+    </div>
+  </div>
+
+  <hr>
+
+
+  <!-- ── STEP 2 ── -->
+  <div class="section">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">shops.js に店舗データを追加する</div>
+        <div class="step-sub">src/data/shops.js を編集</div>
+      </div>
+    </div>
+
+    <p>ファイルを開くと、最後の方に以下のような記述があります。</p>
+
+    <pre><span class="cm">// ← ここが最後の店舗データの終わり</span>
+  },
+];</pre>
+
+    <p><strong>この <code style="background:#f4f4f4;padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;color:#c0392b;">},</code> と <code style="background:#f4f4f4;padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;color:#c0392b;">];</code> の間</strong>に新しい店舗オブジェクトを追加します。</p>
+
+    <pre>  },
+  <span class="cm">// ↓ ここから新しい店舗を追加</span>
+  {
+    <span class="ky">id</span>: <span class="st">"akiba-shokudo"</span>,
+    <span class="ky">name</span>: <span class="st">"アキバ食堂"</span>,
+    <span class="ky">category</span>: <span class="st">"cafe"</span>,
+    <span class="ky">categoryLabel</span>: <span class="st">"カフェ"</span>,
+    <span class="ky">description</span>: <span class="st">"秋葉原の中心にある定食屋。日替わりランチが人気。"</span>,
+    <span class="ky">coinDiscount</span>: <span class="nm">8</span>,
+    <span class="ky">featured</span>: <span class="kw">false</span>,
+    <span class="ky">lat</span>: <span class="nm">35.6990</span>,
+    <span class="ky">lng</span>: <span class="nm">139.7725</span>,
+    <span class="ky">images</span>: [
+      <span class="st">"/shops/akiba-shokudo-1.jpg"</span>,
+      <span class="st">"/shops/akiba-shokudo-2.jpg"</span>,
+    ],
+  },
+<span class="cm">// ↑ ここまで。最後に必ず }, で閉じること</span>
+];</pre>
+
+    <p style="margin-top:16px;font-weight:700;">各フィールドの説明：</p>
+    <table>
+      <thead>
+        <tr>
+          <th>フィールド</th>
+          <th>内容</th>
+          <th>注意点</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>id</code></td>
+          <td>店舗の識別ID</td>
+          <td>半角英数字・ハイフンのみ。他の店舗と重複不可</td>
+        </tr>
+        <tr>
+          <td><code>name</code></td>
+          <td>店舗名（サイドバー・ポップアップに表示）</td>
+          <td>日本語・英語どちらでも可</td>
+        </tr>
+        <tr>
+          <td><code>category</code></td>
+          <td>カテゴリの値（フィルター機能に使用）</td>
+          <td><code>"parts"</code> <code>"cafe"</code> <code>"hobby"</code> <code>"community"</code> のいずれか</td>
+        </tr>
+        <tr>
+          <td><code>categoryLabel</code></td>
+          <td>カテゴリの表示名</td>
+          <td><code>"パーツ"</code> <code>"カフェ"</code> <code>"ホビー"</code> <code>"コミュニティ"</code></td>
+        </tr>
+        <tr>
+          <td><code>description</code></td>
+          <td>店舗の説明文（ポップアップに表示）</td>
+          <td>2〜3文が目安</td>
+        </tr>
+        <tr>
+          <td><code>coinDiscount</code></td>
+          <td>Akiba Coin の割引率（数字のみ）</td>
+          <td>例：<code>10</code> → 10% 割引</td>
+        </tr>
+        <tr>
+          <td><code>featured</code></td>
+          <td>おすすめバッジの表示</td>
+          <td><code>true</code> で「おすすめ」バッジが付く</td>
+        </tr>
+        <tr>
+          <td><code>lat</code></td>
+          <td>緯度（Google マップで取得）</td>
+          <td>例：<code>35.6990</code></td>
+        </tr>
+        <tr>
+          <td><code>lng</code></td>
+          <td>経度（Google マップで取得）</td>
+          <td>例：<code>139.7725</code></td>
+        </tr>
+        <tr>
+          <td><code>images</code></td>
+          <td>写真のパス（配列）</td>
+          <td><code>"/shops/ファイル名.jpg"</code> の形式で記述</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info">
+      <strong>Google マップで緯度・経度を調べる方法：</strong><br>
+      ① Google マップで店舗の場所を開く<br>
+      ② 地図上で右クリック（スマホは長押し）<br>
+      ③ 表示された数字の <strong>1つ目 = lat（緯度）</strong>、<strong>2つ目 = lng（経度）</strong>
+    </div>
+
+    <div class="warn">
+      <strong>よくあるミス：</strong><br>
+      ① <code>},</code> の末尾のカンマを忘れる<br>
+      ② <code>id</code> が他の店舗と同じになっている<br>
+      ③ 写真のパスが <code>/shops/...</code> でなく <code>shops/...</code> になっている（頭の / が必要）
+    </div>
+  </div>
+
+  <hr>
+
+
+  <!-- ── STEP 3 ── -->
+  <div class="section">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">shops.astro を編集して写真を表示する</div>
+        <div class="step-sub">src/pages/shops.astro の popupHTML 関数を修正</div>
+      </div>
+    </div>
+
+    <p><code style="background:#f4f4f4;padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;color:#c0392b;">src/pages/shops.astro</code> を開き、<strong>160〜164行目</strong>付近にある以下のコードを探してください。</p>
+
+    <p style="margin-top:12px;font-weight:700;color:#e8546a;">【変更前】削除するコード：</p>
+    <pre><span class="ky">const</span> slides = [1, 2, 3].map((n) =&gt; `
+  &lt;div style="flex:0 0 100%;scroll-snap-align:start;height:160px;
+              background:#f2f2f2;display:flex;flex-direction:column;
+              align-items:center;justify-content:center;gap:6px;"&gt;
+    ${<span class="st">photoIcon</span>}
+    &lt;span style="font-size:10px;color:#c0c0c0;"&gt;写真 ${<span class="nm">n</span>}&lt;/span&gt;
+  &lt;/div&gt;`).join(<span class="st">""</span>);</pre>
+
+    <p style="margin-top:12px;font-weight:700;color:#27ae60;">【変更後】置き換えるコード：</p>
+    <pre><span class="ky">const</span> imgs = shop.images &amp;&amp; shop.images.length ? shop.images : [];
+<span class="ky">const</span> slides = imgs.length
+  ? imgs.map((src) =&gt; `
+      &lt;div style="flex:0 0 100%;scroll-snap-align:start;
+                  height:160px;overflow:hidden;"&gt;
+        &lt;img src="${src}" alt="${shop.name}"
+             style="width:100%;height:100%;object-fit:cover;" /&gt;
+      &lt;/div&gt;`).join(<span class="st">""</span>)
+  : `&lt;div style="flex:0 0 100%;scroll-snap-align:start;height:160px;
+                background:#f2f2f2;display:flex;flex-direction:column;
+                align-items:center;justify-content:center;gap:6px;"&gt;
+      ${<span class="st">photoIcon</span>}
+      &lt;span style="font-size:10px;color:#c0c0c0;"&gt;写真なし&lt;/span&gt;
+    &lt;/div&gt;`;</pre>
+
+    <p style="margin-top:16px;font-weight:700;">修正後の動作：</p>
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>店舗データの状態</th>
+          <th>ポップアップに表示されるもの</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>images: [...]</code> が設定されている</td>
+          <td><span class="tag-green">実際の写真スライドショー</span></td>
+        </tr>
+        <tr>
+          <td><code>images</code> がない、または空</td>
+          <td><span class="tag-gray">グレーのプレースホルダー（写真なし）</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+
+  <!-- ── STEP 4 ── -->
+  <div class="section">
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-title">動作を確認する</div>
+        <div class="step-sub">開発サーバーを起動してブラウザで確認</div>
+      </div>
+    </div>
+
+    <p>ターミナルで以下のコマンドを実行してください：</p>
+    <pre>npm run dev</pre>
+    <p>ブラウザで <strong>http://localhost:4321/shops</strong> を開き、地図上の新しいマーカーをクリックして写真が表示されるか確認してください。</p>
+
+    <div class="info">
+      <strong>確認チェックリスト：</strong><br>
+      ✓ サイドバーに新しい店舗名が表示されている<br>
+      ✓ 地図上に新しいマーカーが表示されている<br>
+      ✓ マーカーをクリックするとポップアップが開く<br>
+      ✓ ポップアップに写真が表示されている<br>
+      ✓ カテゴリフィルターで正しく絞り込まれる
+    </div>
+  </div>
+
+
+  <!-- ── Footer ── -->
+  <div class="footer">
+    AKIBA JAPAN NPO — 開発ガイド &nbsp;|&nbsp; src/data/shops.js &amp; src/pages/shops.astro
+  </div>
+
+</body>
+</html>

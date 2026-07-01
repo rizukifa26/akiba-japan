@@ -87,11 +87,29 @@ export const shops = [
     lat: 35.6948,
     lng: 139.7715,
   },
+  {
+    id: "akiba-londobell",
+    name: "秋葉原ロンドベル　本店",
+    category: "Bar",
+    categoryLabel: "バー",
+    description: "多言語対応の交流センター。日本語教室・文化体験ワークショップを定期開催。観光案内も無料で提供。",
+    coinDiscount: 5,
+    featured: false,
+    lat: 35.6948,
+    lng: 139.7715,
+    images: [
+      "/akibalondobell/akibalondobell-1.jpg",
+      "/akibalondobell/akibalondobell-2.jpg",
+      "/akibalondobell/akibalondobell-3.jpg",
+      "/akibalondobell/akibalondobell-4.jpg",
+      "/akibalondobell/akibalondobell-5.jpg",
+    ],
+  },
 ];
 
 export const categories = [
   { value: "all", label: "すべて" },
-  { value: "parts", label: "パーツ" },
+  { value: "Bar", label: "バー" },
   { value: "cafe", label: "カフェ" },
   { value: "hobby", label: "ホビー" },
   { value: "community", label: "コミュニティ" },
