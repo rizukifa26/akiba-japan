@@ -85,7 +85,7 @@ export const shops = [
     name: "アキバコミュニティハブ",
     category: "community",
     categoryLabel: "コミュニティ",
-    description: "地域住民やno観光客が集えるコワーキング兼交流スペース。イベント・ミートアップの会場としても利用可。",
+    description: "地域住民やnono観光客が集えるコワーキング兼交流スペース。イベント・ミートアップの会場としても利用可。",
     coinDiscount: 15,
     featured: false,
     lat: 35.6968,
