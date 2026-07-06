@@ -178,18 +178,20 @@ const slides = imgs.length
         <div class="popup-carousel" style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;">
           ${slides}
         </div>
+        ${imgs.length > 1 ? `
         <!-- Prev -->
         <button
-          onclick="this.closest('div').querySelector('.popup-carousel').scrollBy({left:-300,behavior:'smooth'})"
+          onclick="popupCarouselNav(this,-1)"
           style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.88);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:#333;box-shadow:0 1px 4px rgba(0,0,0,.15);"
         >&#8249;</button>
         <!-- Next -->
         <button
-          onclick="this.closest('div').querySelector('.popup-carousel').scrollBy({left:300,behavior:'smooth'})"
+          onclick="popupCarouselNav(this,1)"
           style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.88);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:#333;box-shadow:0 1px 4px rgba(0,0,0,.15);"
         >&#8250;</button>
         <!-- Slide count badge -->
-        <div style="position:absolute;bottom:8px;right:10px;background:rgba(0,0,0,.45);color:#fff;font-size:9px;padding:2px 7px;border-radius:20px;font-family:monospace;letter-spacing:.05em;">1 / 3</div>
+        <div class="carousel-badge" style="position:absolute;bottom:8px;right:10px;background:rgba(0,0,0,.45);color:#fff;font-size:9px;padding:2px 7px;border-radius:20px;font-family:monospace;letter-spacing:.05em;">1 / ${imgs.length}</div>
+        ` : ''}
       </div>
       <!-- Content -->
       <div style="padding:12px 14px 14px;">
@@ -267,17 +269,21 @@ const slides = imgs.length
     btn.addEventListener("click", () => selectShop(btn.dataset.id, true));
   });
 
-  // ── Carousel slide counter ─────────────────────────────────────
-  map.on("popupopen", () => {
-    const carousel = document.querySelector(".popup-carousel");
-    const badge = carousel?.parentElement?.querySelector("div:last-child");
-    if (!carousel || !badge) return;
+  // ── Carousel navigation ────────────────────────────────────────
+  window.popupCarouselNav = function(btn, dir) {
+    const wrapper = btn.closest('div');
+    const carousel = wrapper.querySelector('.popup-carousel');
+    const badge = wrapper.querySelector('.carousel-badge');
+    if (!carousel) return;
     const total = carousel.children.length;
-    carousel.addEventListener("scroll", () => {
-      const idx = Math.round(carousel.scrollLeft / carousel.offsetWidth) + 1;
-      badge.textContent = `${idx} / ${total}`;
-    });
-  });
+    carousel.scrollBy({ left: dir * carousel.offsetWidth, behavior: 'smooth' });
+    if (badge) {
+      setTimeout(() => {
+        const idx = Math.round(carousel.scrollLeft / carousel.offsetWidth) + 1;
+        badge.textContent = idx + ' / ' + total;
+      }, 350);
+    }
+  };
 
   // ── Category filter ────────────────────────────────────────────
   const filterBtns = document.querySelectorAll(".filter-btn");
