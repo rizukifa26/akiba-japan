@@ -1,7 +1,7 @@
 export const shops = [
   {
     id: "akiba-londobell honten",
-    name: "秋葉原ロンドベル　本店",
+    name: "秋葉原ロンドベルの本店",
     category: "bar",
     categoryLabel: "バー",
     description: "アニソンカラオケバー　秋葉原ロンドベル　カラオケ無料で歌えます♪",
