@@ -150,7 +150,7 @@ export const shops = [
 
 export const categories = [
   { value: "all", label: "すべて" },
-  { value: "ber", label: "バー" },
+  { value: "bar", label: "バー" },
   { value: "company", label: "企業" },
   { value: "hobby", label: "ホビー" },
   { value: "community", label: "コミュニティ" },

@@ -68,10 +68,12 @@ import { shops, categories } from "../data/shops.js";
               </div>
               <div class="flex items-center gap-2">
                 <span class={`text-[10px] font-semibold rounded px-1.5 py-0.5 border ${
-                  shop.category === 'parts'     ? 'bg-sky-500/10 text-sky-400 border-sky-500/20' :
-                  shop.category === 'cafe'      ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
-                  shop.category === 'hobby'     ? 'bg-violet-500/10 text-violet-400 border-violet-500/20' :
-                                                  'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                  shop.category === 'bar'      ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
+                  shop.category === 'company'  ? 'bg-sky-500/10 text-sky-400 border-sky-500/20' :
+                  shop.category === 'cabaret'  ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' :
+                  shop.category === 'izakaya'  ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
+                  shop.category === 'flower'   ? 'bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/20' :
+                                                 'bg-white/10 text-white/50 border-white/20'
                 }`}>
                   {shop.categoryLabel}
                 </span>
@@ -149,10 +151,11 @@ import { shops, categories } from "../data/shops.js";
   // ── Popup content ──────────────────────────────────────────────
   function popupHTML(shop) {
     const catColor = {
-      parts: "#38bdf8",
-      cafe: "#fbbf24",
-      hobby: "#a78bfa",
-      community: "#34d399",
+      bar:     "#fbbf24",
+      company: "#38bdf8",
+      cabaret: "#fb7185",
+      izakaya: "#fb923c",
+      flower:  "#e879f9",
     }[shop.category] || "#e8546a";
 
     const photoIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="#ccc" stroke="none"/><path d="M21 15l-5-5-4 4-2-2-4 4"/></svg>`;
