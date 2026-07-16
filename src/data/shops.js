@@ -90,8 +90,8 @@ export const shops = [
     lat: 35.703207,
     lng: 139.770548,
     images: [
+   "/public/Shangrila/Shangrila2.JPG",
    "/public/Shangrila/Shangrila1.JPG",
-   "/",
    "/",
     ],
   },
@@ -105,6 +105,11 @@ export const shops = [
     featured: false,
     lat: 35.691806,
     lng: 139.770416,
+    images: [
+   "/public/magicalnight/magical1.JPG",
+   "/public/magicalnight/magical2.JPG",
+   "/public/magicalnight/magical3.JPG",
+    ],
   },
   {
     id: "fantasia-bell",
@@ -116,6 +121,11 @@ export const shops = [
     featured: false,
     lat: 35.691839,
     lng: 139.770366,
+    images: [
+   "/public/fantasia-bell/fantasia1.JPG",
+   "/public/fantasia-bell/fantasia2.JPG",
+   "/public/fantasia-bell/fantasia3.JPG",
+    ],
   },
   {
     id: "AlicexAlice",
