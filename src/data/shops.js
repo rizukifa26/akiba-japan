@@ -202,6 +202,54 @@ export const shops = [
    "/public/yamashiroya/yamashiroya3.jpg",
     ],
   },
+   {
+    id: "niconico",
+    name: "ニコニコまぜ麺＆カレー",
+    category: "halal",
+    categoryLabel: "ハラル料理店",
+    description: "秋葉原にある小規模ハラル和食レストラン。一度に12名様まで。現金支払いのみ。ようこそ皆さん。",
+    coinDiscount: 5,
+    featured: false,
+    lat: 35.69624389999827,
+    lng: 139.77373495889321,
+    images: [
+   "/public/niconico/niconico1.jpg",
+   "/public/niconico/niconico2.jpg",
+   "/public/niconico/niconico3.jpg",
+    ],
+  },
+  {
+    id: "MasjidNusantara",
+    name: "Masjid Nusantara -Akihabara Tokyo",
+    category: "mosque",
+    categoryLabel: "モスク",
+    description: "Waktu Sholat Jum’at / Friday Prayer TimesKloter 1 / Session 1 : 12:05Kloter 2 / Session 2 : 13:05",
+    coinDiscount: 5,
+    featured: false,
+    lat: 35.696237025800684,
+    lng: 139.7735847449213,
+    images: [
+   "/public/MasjidNusantara/MasjidNusantara1.jpg",
+   "/public/MasjidNusantara/MasjidNusantara2.png",
+   "/public/MasjidNusantara/MasjidNusantara3.png",
+    ],
+  },
+  {
+    id: "JSSSouvenirs",
+    name: "JSS Souvenirs",
+    category: "souvenirshop",
+    categoryLabel: "土産物店",
+    description: "JSS Japan Souvenirs Shopjp/Post : 101-0041 Tokyo-to Chioda-ku Kandasudachou 2-17-12/Telp : 03 3525 8782/Fax : 03 3525 8783",
+    coinDiscount: 5,
+    featured: false,
+    lat: 35.696237025800684,
+    lng: 139.7735847449213,
+    images: [
+   "/public/JSS/jss1.png",
+   "/public/JSS/jss2.png",
+   "/public/JSS/jss3.png",
+    ],
+  },
 ];
 
 export const categories = [
@@ -213,4 +261,7 @@ export const categories = [
   { value: "cabaret", label: "キャバレー　クラブ" },
   { value: "izakaya", label: "居酒屋" },
   { value: "flower", label: "フラワーショップ" },
+  { value: "halal", label: "ハラル料理店" },
+  { value: "mosque", label: "モスク" },
+  { value: "souvenirshop", label: "土産物店" },
 ];
