@@ -168,19 +168,40 @@ import { shops, categories } from "../data/shops.js";
     const photoIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="#ccc" stroke="none"/><path d="M21 15l-5-5-4 4-2-2-4 4"/></svg>`;
 
     const imgs = shop.images && shop.images.length ? shop.images : [];
-const slides = imgs.length
-  ? imgs.map((src) => `
-      <div style="flex:0 0 100%;scroll-snap-align:start;
-                  height:160px;overflow:hidden;">
-        <img src="${src}" alt="${shop.name}"
-             style="width:100%;height:100%;object-fit:cover;" />
-      </div>`).join("")
-  : `<div style="flex:0 0 100%;scroll-snap-align:start;height:160px;
-                background:#f2f2f2;display:flex;flex-direction:column;
-                align-items:center;justify-content:center;gap:6px;">
-      ${photoIcon}
-      <span style="font-size:10px;color:#c0c0c0;">写真なし</span>
-    </div>`;
+    const slides = imgs.length
+      ? imgs.map((src) => `
+          <div style="flex:0 0 100%;scroll-snap-align:start;height:160px;overflow:hidden;">
+            <img src="${src}" alt="${shop.name}" style="width:100%;height:100%;object-fit:cover;" />
+          </div>`).join("")
+      : `<div style="flex:0 0 100%;scroll-snap-align:start;height:160px;background:#f2f2f2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+          ${photoIcon}
+          <span style="font-size:10px;color:#c0c0c0;">写真なし</span>
+        </div>`;
+
+    const descRow = shop.description ? `
+      <p style="font-size:12px;color:#555;line-height:1.65;margin-bottom:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${shop.description}</p>` : '';
+
+    const addressRow = shop.address ? `
+      <div style="display:flex;align-items:flex-start;gap:6px;margin-top:8px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:1px;flex-shrink:0;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span style="font-size:11px;color:#666;line-height:1.5;">${shop.address}</span>
+      </div>` : '';
+
+    const phoneRow = shop.phone ? `
+      <div style="display:flex;align-items:center;gap:6px;margin-top:6px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.43 2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.56a16 16 0 0 0 6.03 6.03l1.62-1.62a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <a href="tel:${shop.phone}" style="font-size:11px;color:#666;text-decoration:none;">${shop.phone}</a>
+      </div>` : '';
+
+    const websiteBtn = shop.website ? `
+      <a href="${shop.website}" target="_blank" rel="noopener noreferrer"
+        style="display:block;margin-top:12px;padding:8px 0;background:#e8546a;color:#fff;text-align:center;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;letter-spacing:.04em;">
+        詳しくはこちら →
+      </a>` : '';
+
+    const hasMeta = shop.description || shop.address || shop.phone;
+    const divider = hasMeta && (shop.address || shop.phone || shop.website) && shop.description
+      ? `<div style="border-top:1px solid #f0f0f0;margin-top:10px;"></div>` : '';
 
     return `<div style="font-family:'Noto Sans JP',sans-serif;width:300px;">
       <!-- Carousel -->
@@ -189,17 +210,8 @@ const slides = imgs.length
           ${slides}
         </div>
         ${imgs.length > 1 ? `
-        <!-- Prev -->
-        <button
-          onclick="popupCarouselNav(this,-1)"
-          style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.88);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:#333;box-shadow:0 1px 4px rgba(0,0,0,.15);"
-        >&#8249;</button>
-        <!-- Next -->
-        <button
-          onclick="popupCarouselNav(this,1)"
-          style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.88);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:#333;box-shadow:0 1px 4px rgba(0,0,0,.15);"
-        >&#8250;</button>
-        <!-- Slide count badge -->
+        <button onclick="popupCarouselNav(this,-1)" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.88);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:#333;box-shadow:0 1px 4px rgba(0,0,0,.15);">&#8249;</button>
+        <button onclick="popupCarouselNav(this,1)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.88);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:#333;box-shadow:0 1px 4px rgba(0,0,0,.15);">&#8250;</button>
         <div class="carousel-badge" style="position:absolute;bottom:8px;right:10px;background:rgba(0,0,0,.45);color:#fff;font-size:9px;padding:2px 7px;border-radius:20px;font-family:monospace;letter-spacing:.05em;">1 / ${imgs.length}</div>
         ` : ''}
       </div>
@@ -209,8 +221,12 @@ const slides = imgs.length
           <span style="font-size:10px;font-weight:700;color:${catColor};background:${catColor}15;border:1px solid ${catColor}30;border-radius:4px;padding:2px 7px;">${shop.categoryLabel}</span>
           ${shop.featured ? '<span style="font-size:9px;font-weight:700;background:#e8546a;color:#fff;border-radius:4px;padding:2px 7px;letter-spacing:.04em;">おすすめ</span>' : ""}
         </div>
-        <p style="font-size:15px;font-weight:700;color:#111;margin-bottom:6px;line-height:1.3;">${shop.name}</p>
-        <p style="font-size:12px;color:#777;line-height:1.6;">${shop.description}</p>
+        <p style="font-size:15px;font-weight:700;color:#111;margin-bottom:8px;line-height:1.3;">${shop.name}</p>
+        ${descRow}
+        ${divider}
+        ${addressRow}
+        ${phoneRow}
+        ${websiteBtn}
       </div>
     </div>`;
   }
