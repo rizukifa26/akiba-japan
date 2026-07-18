@@ -226,7 +226,7 @@ export const shops = [
   },
   {
     id: "koiki-sakaba-kanda",
-    name: "小粋酒場　神田",
+    name: "小粋酒場 神田",
     category: "izakaya",
     categoryLabel: "居酒屋",
     description: "肌寒い季節は日本酒ともつ鍋で一杯！宴会コースは2000円～。個室はカラオケ・TV完備。",
