@@ -15,7 +15,7 @@ No test suite or linter is configured.
 
 ## Architecture
 
-**Astro 6 + Tailwind CSS 4** static site for NPO法人国際AKIBA総合支援協会 (AKIBA JAPAN), deployed to `akiba-japan.jp` on Netlify.
+**Astro 6 + Tailwind CSS 4** static site for NPO法人国際AKIBA総合支援協会 (AKIBA JAPAN). Domain `akiba-japan.org` is registered at お名前.com, hosted on Netlify (free plan). DNS at お名前.com points to Netlify.
 
 ### Page pattern
 
@@ -62,3 +62,9 @@ Footer has three link columns (`nav1`/`nav2`/`nav3`) plus an `sns` array for soc
 ### Client-side JS
 
 Astro ships zero JS by default. The one exception is `shops.astro`, which includes an inline `<script>` for client-side category filtering (show/hide `.shop-wrapper` elements by `data-category`).
+
+## Deploy
+
+Hosted on Netlify — push to `main` branch triggers automatic build and deploy. Build command: `npm run build`, publish directory: `dist/`.
+
+If the hosting is ever moved to お名前.com レンタルサーバー, build locally and upload the contents of `dist/` to `public_html/akiba-japan.org/` via FTP.
