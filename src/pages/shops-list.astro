@@ -1,0 +1,78 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { shops } from "../data/shops.js";
+---
+
+<BaseLayout
+  title="加盟店一覧 | AKIBA JAPAN"
+  description="AKIBA JAPAN加盟店一覧。秋葉原・神田エリアの加盟店をご紹介します。"
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+
+    <!-- Header -->
+    <p class="text-primary font-mono text-[10px] tracking-[0.2em] uppercase mb-2">Member Shops</p>
+    <h1 class="text-3xl font-black text-white mb-1">加盟店一覧</h1>
+    <p class="text-white/40 text-sm mb-10">{shops.length}店舗が加盟しています</p>
+
+    <!-- List -->
+    <ul class="divide-y divide-white/[0.07]">
+      {shops.map((shop) => (
+        <li class="flex items-center gap-5 py-4 group">
+
+          <!-- Logo area (left) -->
+          <div class="w-36 shrink-0 flex items-center justify-center">
+            {shop.logo ? (
+              shop.website ? (
+                <a
+                  href={shop.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`${shop.name} のウェブサイトへ`}
+                  class="block"
+                >
+                  <img
+                    src={shop.logo}
+                    alt={`${shop.name} ロゴ`}
+                    class="max-h-12 max-w-[140px] w-auto object-contain transition-opacity duration-150 hover:opacity-75"
+                  />
+                </a>
+              ) : (
+                <img
+                  src={shop.logo}
+                  alt={`${shop.name} ロゴ`}
+                  class="max-h-12 max-w-[140px] w-auto object-contain"
+                />
+              )
+            ) : (
+              <div class="h-12 w-36 bg-white/[0.04] border border-white/10 rounded-lg flex items-center justify-center">
+                <span class="text-white/20 text-[10px] font-mono tracking-wider">NO LOGO</span>
+              </div>
+            )}
+          </div>
+
+          <!-- Divider -->
+          <div class="w-px h-8 bg-white/10 shrink-0"></div>
+
+          <!-- Shop name (right) -->
+          <div class="flex-1 min-w-0">
+            {shop.website ? (
+              <a
+                href={shop.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-white/80 text-sm font-semibold hover:text-white transition-colors duration-150 leading-snug"
+              >
+                {shop.name}
+              </a>
+            ) : (
+              <span class="text-white/80 text-sm font-semibold leading-snug">{shop.name}</span>
+            )}
+            <p class="text-white/30 text-[11px] mt-0.5">{shop.categoryLabel}</p>
+          </div>
+
+        </li>
+      ))}
+    </ul>
+
+  </div>
+</BaseLayout>
