@@ -428,8 +428,8 @@ export const shops = [
     lat: 35.6939627546134,
     lng: 139.77207165242427,
     images: [
-      "/public/mudai/mudai1.jpg.crdownload",
-      "/public/mudai/mudai2.jpg.crdownload",
+      "/public/mudai/mudai1.png",
+      "/public/mudai/mudai2.png",
       "/public/mudai/mudai3.jpg",
     ],
   },
