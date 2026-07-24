@@ -63,6 +63,10 @@ Footer has three link columns (`nav1`/`nav2`/`nav3`) plus an `sns` array for soc
 
 Astro ships zero JS by default. The one exception is `shops.astro`, which includes an inline `<script>` for client-side category filtering (show/hide `.shop-wrapper` elements by `data-category`).
 
+## Git
+
+When committing, do not add `Co-Authored-By` lines to commit messages.
+
 ## Deploy
 
 Hosted on Netlify — push to `main` branch triggers automatic build and deploy. Build command: `npm run build`, publish directory: `dist/`.
