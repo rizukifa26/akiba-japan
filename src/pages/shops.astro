@@ -398,6 +398,13 @@ import { shops, categories } from "../data/shops.js";
     if (b.dataset.filter !== "all") setFilterBtn(b, false);
   });
 
+  // ── Auto-select shop from URL param (?shop=id) ────────────────
+  const urlParams = new URLSearchParams(window.location.search);
+  const preselect = urlParams.get("shop");
+  if (preselect && markerMap[preselect]) {
+    setTimeout(() => selectShop(preselect, true), 300);
+  }
+
   // ── Mobile: fix map height after layout paint ──────────────────
   function fixSidebarHeight() {
     const sidebar = document.getElementById("shops-sidebar");
