@@ -41,8 +41,15 @@ const coinPackages = [
   <!-- ─── SECTION 1: HERO ─────────────────────────────── -->
   <section id="hero" class="relative flex flex-col justify-center overflow-hidden bg-black min-h-[calc(100vh-4rem)]">
 
-    <!-- Grid pattern -->
-    <div class="hero-grid absolute inset-0" aria-hidden="true"></div>
+    <!-- Background image -->
+    <img
+      src="/akiba-japan/haikei.png"
+      alt=""
+      aria-hidden="true"
+      class="absolute inset-0 w-full h-full object-cover object-center"
+    />
+    <!-- Dark overlay for text readability -->
+    <div class="absolute inset-0 bg-black/55" aria-hidden="true"></div>
     <!-- Radial gradient overlay -->
     <div class="hero-glow absolute inset-0" aria-hidden="true"></div>
 
@@ -281,13 +288,6 @@ const coinPackages = [
 </BaseLayout>
 
 <style>
-  .hero-grid {
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-    background-size: 44px 44px;
-  }
-
   .hero-glow {
     background:
       radial-gradient(ellipse at 85% 35%, rgba(232, 84, 106, 0.18) 0%, transparent 55%),
