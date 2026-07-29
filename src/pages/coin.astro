@@ -33,12 +33,15 @@ const faqs = [
   <!-- ─── HERO COIN ──────────────────────────────────── -->
   <section class="relative bg-[#1a1a1a] overflow-hidden py-24 sm:py-32 border-b border-white/10">
 
-    <!-- Decorative ¥ background -->
+    <!-- Decorative $ coin background -->
     <div
       class="absolute inset-0 flex items-center justify-end pr-8 sm:pr-16 pointer-events-none select-none"
       aria-hidden="true"
     >
-      <span class="hero-yen text-white/[0.035] font-black leading-none">¥</span>
+      <svg class="hero-coin" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="46" stroke="rgba(255,255,255,0.035)" stroke-width="4"/>
+        <text x="50" y="67" text-anchor="middle" font-size="50" font-weight="900" fill="rgba(255,255,255,0.035)" font-family="Arial, sans-serif">$</text>
+      </svg>
     </div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -253,9 +256,9 @@ const faqs = [
 </BaseLayout>
 
 <style>
-  .hero-yen {
-    font-size: clamp(16rem, 40vw, 36rem);
-    line-height: 1;
+  .hero-coin {
+    width: clamp(16rem, 40vw, 36rem);
+    height: clamp(16rem, 40vw, 36rem);
   }
 </style>
 
