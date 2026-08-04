@@ -15,6 +15,8 @@
     background-color: #0f0f0f;
     color: #ffffff;
     scroll-behavior: smooth;
+    overflow-wrap: break-word;
+    word-break: auto-phrase;
   }
 
   * {
