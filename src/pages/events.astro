@@ -1,27 +1,125 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+// ── Event data ──────────────────────────────────────────────────
+// 新しいイベントはこの配列の先頭に追加してください（新しい順に表示）。
+// status: "done"（開催済み）/ "upcoming"（開催予定）
+const events = [
+  {
+    id: "mosque-traffic-2026-03",
+    status: "done",
+    category: "活動報告",
+    title: "モスク周辺における交通整備・列整理",
+    date: "2026年3月21日",
+    location: "モスク周辺",
+    cover: "/akibajapan2/halal1.jpeg",
+    summary:
+      "モスク周辺にて交通整備および来場者の列整理活動を実施しました。",
+    body: [
+      "2026年3月21日、モスク周辺にて交通整備および来場者の列整理活動を実施いたしました。当日は多数の参列者が訪れ、参道および周辺歩道に長い行列ができたため、スタッフが蛍光ベストを着用し、現場に立って誘導にあたりました。",
+      "具体的には、参列者の列がスムーズに流れるよう整列の案内を行うとともに、境内および周辺での禁煙のご案内も併せて実施し、安全かつ秩序ある環境づくりに努めました。",
+      "多くの参列者にご協力いただき、大きな混乱もなく円滑に活動を終えることができました。今後も地域の安全と快適な礼拝環境の維持のため、継続して交通整備・列整理活動に取り組んでまいります。",
+    ],
+  },
+];
+
+const featured = events[0];
+const rest = events.slice(1);
+
+const statusLabel = { done: "開催済み", upcoming: "開催予定" };
 ---
 
-<BaseLayout title="イベント | AKIBA JAPAN" description="AKIBA JAPANが主催・参加するイベントや活動の最新情報です。">
-  <section class="max-w-6xl mx-auto px-4 py-20">
-    <h1 class="text-4xl font-bold mb-6">イベント</h1>
-
-    <p class="text-white/60">
-      【活動報告】
-      モスク周辺における交通整備・列整理について
-
-      2026年3月21日、モスク周辺にて交通整備および来場者の列整理活動を実施いたしました。当日は多数の参列者が訪れ、参道および周辺歩道に長い行列ができたため、スタッフが蛍光ベストを着用し、現場に立って誘導にあたりました。
-
-      具体的には、参列者の列がスムーズに流れるよう整列の案内を行うとともに、境内および周辺での禁煙のご案内も併せて実施し、安全かつ秩序ある環境づくりに努めました。
-
-      多くの参列者にご協力いただき、大きな混乱もなく円滑に活動を終えることができました。今後も地域の安全と快適な礼拝環境の維持のため、継続して交通整備・列整理活動に取り組んでまいります。
+<BaseLayout
+  title="イベント | AKIBA JAPAN"
+  description="AKIBA JAPANが主催・参加するイベントや活動報告の最新情報です。"
+>
+  <section class="max-w-4xl mx-auto px-4 py-16 md:py-24">
+    <!-- ─── Header ─────────────────────────────────────────────── -->
+    <p class="font-mono text-xs tracking-[0.25em] uppercase text-primary mb-3">
+      Event / 活動報告
+    </p>
+    <h1 class="text-3xl md:text-4xl font-black mb-4 leading-tight">
+      イベント・活動報告
+    </h1>
+    <p class="text-white/50 mb-12 max-w-2xl leading-relaxed">
+      AKIBA JAPANが主催・参加した地域活動やイベントの記録です。
     </p>
 
-    <img
-      src="/akibajapan2/halal1.jpeg"
-      alt="モスク周辺での活動の様子"
-      class="w-full max-w-4xl mx-auto mt-10 rounded-lg"
-    />
+    <!-- ─── Featured event ─────────────────────────────────────── -->
+    {featured && (
+      <article class="rounded-2xl overflow-hidden border border-white/10 bg-white/[0.02]">
+        <!-- Cover -->
+        <div class="relative">
+          <img
+            src={featured.cover}
+            alt={featured.title}
+            class="w-full h-56 md:h-80 object-cover"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+          <div class="absolute top-4 left-4 flex items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-wide rounded-full bg-emerald-500/90 text-white px-3 py-1 backdrop-blur-sm">
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M2.5 6.5L5 9L9.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              {statusLabel[featured.status]}
+            </span>
+            <span class="text-[11px] font-semibold tracking-wide rounded-full bg-black/50 text-white/90 border border-white/20 px-3 py-1 backdrop-blur-sm">
+              {featured.category}
+            </span>
+          </div>
+        </div>
 
+        <!-- Content -->
+        <div class="p-6 md:p-10">
+          <!-- Meta -->
+          <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/50 mb-5">
+            <span class="inline-flex items-center gap-2">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              {featured.date}
+            </span>
+            <span class="inline-flex items-center gap-2">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              {featured.location}
+            </span>
+          </div>
+
+          <h2 class="text-2xl md:text-3xl font-bold mb-6 leading-snug">
+            {featured.title}
+          </h2>
+
+          <div class="space-y-4 text-white/70 leading-[1.9] text-[15px]">
+            {featured.body.map((para) => <p>{para}</p>)}
+          </div>
+        </div>
+      </article>
+    )}
+
+    <!-- ─── Other events (grid) ────────────────────────────────── -->
+    {rest.length > 0 && (
+      <div class="mt-16">
+        <h2 class="text-lg font-bold mb-6 text-white/80">これまでの活動</h2>
+        <div class="grid gap-6 sm:grid-cols-2">
+          {rest.map((ev) => (
+            <article class="rounded-xl overflow-hidden border border-white/10 bg-white/[0.02] hover:border-white/20 transition-colors">
+              <div class="relative">
+                <img src={ev.cover} alt={ev.title} class="w-full h-40 object-cover" />
+                <span class="absolute top-3 left-3 text-[10px] font-bold tracking-wide rounded-full bg-emerald-500/90 text-white px-2.5 py-0.5">
+                  {statusLabel[ev.status]}
+                </span>
+              </div>
+              <div class="p-5">
+                <div class="flex items-center gap-3 text-xs text-white/40 mb-2">
+                  <span>{ev.date}</span>
+                  <span>·</span>
+                  <span>{ev.location}</span>
+                </div>
+                <h3 class="text-base font-bold mb-2 leading-snug">{ev.title}</h3>
+                <p class="text-sm text-white/50 leading-relaxed line-clamp-3">{ev.summary}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    )}
   </section>
 </BaseLayout>
