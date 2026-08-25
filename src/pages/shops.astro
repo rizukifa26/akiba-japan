@@ -16,35 +16,59 @@ import { shops, categories } from "../data/shops.js";
   </Fragment>
 
   <!-- ─── MAP LAYOUT ──────────────────────────────────────────── -->
-  <div class="flex flex-col md:flex-row" style="height: calc(100vh - 4rem);">
+  <div class="relative md:flex md:flex-row overflow-hidden" style="height: calc(100vh - 4rem);">
 
     <!-- ─── SIDEBAR ─────────────────────────────────────────── -->
     <aside
-      class="flex flex-col bg-[#0d0d0d] border-b md:border-b-0 md:border-r border-white/10 w-full md:w-[320px] shrink-0"
-      style="height: 45%; min-height: 0;"
+      class="flex flex-col bg-[#0d0d0d] w-full md:w-[320px] shrink-0 min-h-0
+             absolute md:static bottom-0 left-0 right-0 z-[900]
+             border-white/10 border-t md:border-t-0 md:border-r
+             rounded-t-2xl md:rounded-none
+             shadow-[0_-8px_40px_rgba(0,0,0,0.55)] md:shadow-none md:h-full"
       id="shops-sidebar"
     >
-      <!-- Sidebar header -->
-      <div class="px-4 pt-4 pb-3 border-b border-white/10 shrink-0">
-        <p class="text-primary font-mono text-[10px] tracking-[0.2em] uppercase mb-1">Member Shops</p>
-        <div class="flex items-baseline justify-between">
-          <h1 class="text-lg font-black text-white leading-tight">加盟店マップ</h1>
-          <span class="font-mono text-xs text-white/30">
-            <span id="visible-count">{shops.length}</span>店舗
-          </span>
+      <!-- Drag handle + header = bottom-sheet grab zone (mobile) -->
+      <div id="sheet-grab" class="shrink-0 touch-none md:touch-auto select-none md:select-auto">
+        <div class="md:hidden flex justify-center pt-2.5 pb-1.5">
+          <div class="w-10 h-1 rounded-full bg-white/25"></div>
+        </div>
+        <div class="px-4 pt-1 md:pt-4 pb-3 border-b border-white/10">
+          <p class="text-primary font-mono text-[10px] tracking-[0.2em] uppercase mb-1">Member Shops</p>
+          <div class="flex items-baseline justify-between">
+            <h1 class="text-lg font-black text-white leading-tight">加盟店マップ</h1>
+            <span class="font-mono text-xs text-white/30">
+              <span id="visible-count">{shops.length}</span>店舗
+            </span>
+          </div>
         </div>
       </div>
 
       <!-- Category filter -->
-      <div class="flex flex-wrap gap-1.5 px-3 py-2.5 border-b border-white/10 shrink-0">
-        {categories.map(({ value, label }) => (
-          <button
-            class="filter-btn px-3 py-1 rounded-full text-[11px] font-semibold border transition-all duration-200"
-            data-filter={value}
-          >
-            {label}
-          </button>
-        ))}
+      <div class="px-3 py-2.5 border-b border-white/10 shrink-0">
+        <div
+          id="filter-chips"
+          class="flex flex-nowrap md:flex-wrap gap-1.5 overflow-x-auto md:overflow-hidden"
+        >
+          {categories.map(({ value, label }) => (
+            <button
+              class="filter-btn shrink-0 whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-semibold border transition-all duration-200"
+              data-filter={value}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <!-- Desktop-only: expand/collapse when chips overflow 2 rows -->
+        <button
+          id="filter-toggle"
+          type="button"
+          class="hidden mt-2 mx-auto items-center gap-1 text-[11px] font-semibold text-white/45 hover:text-white/80 transition-colors"
+        >
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="toggle-label">もっと見る</span>
+        </button>
       </div>
 
       <!-- Shop list -->
@@ -105,7 +129,7 @@ import { shops, categories } from "../data/shops.js";
     </aside>
 
     <!-- ─── MAP ──────────────────────────────────────────────── -->
-    <div id="map" class="flex-1" style="min-height: 0;"></div>
+    <div id="map" class="absolute inset-0 md:static md:flex-1" style="min-height: 0;"></div>
 
   </div>
 </BaseLayout>
@@ -308,6 +332,8 @@ import { shops, categories } from "../data/shops.js";
     if (activeEl) activeEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
 
     // Map interaction
+    // On mobile, collapse the bottom-sheet so the marker + popup stay visible
+    if (flyTo && window.innerWidth < 768) snapTo("peek");
     if (flyTo) {
       map.flyTo([entry.shop.lat, entry.shop.lng], 17, { duration: 0.7 });
       // open popup after fly completes
@@ -402,6 +428,54 @@ import { shops, categories } from "../data/shops.js";
     if (b.dataset.filter !== "all") setFilterBtn(b, false);
   });
 
+  // ── Desktop: collapse category chips to 2 rows with a toggle ────
+  // (Mobile keeps the horizontal-scroll single row — no toggle.)
+  const chips = document.getElementById("filter-chips");
+  const filterToggle = document.getElementById("filter-toggle");
+  const toggleLabel = filterToggle.querySelector(".toggle-label");
+  let filterExpanded = false;
+
+  function collapsedChipsHeight() {
+    const items = chips.querySelectorAll(".filter-btn");
+    if (!items.length) return 0;
+    const gap = parseFloat(getComputedStyle(chips).rowGap) || 6;
+    return items[0].offsetHeight * 2 + gap; // two rows
+  }
+
+  function updateFilterCollapse() {
+    if (window.innerWidth < 768) {
+      // mobile: single scrolling row, no collapse
+      chips.style.maxHeight = "";
+      filterToggle.style.display = "none";
+      return;
+    }
+    const collapsed = collapsedChipsHeight();
+    const full = chips.scrollHeight;
+    if (full <= collapsed + 2) {
+      // everything fits in ≤ 2 rows → toggle not needed
+      filterToggle.style.display = "none";
+      chips.style.maxHeight = "";
+      return;
+    }
+    filterToggle.style.display = "flex";
+    if (filterExpanded) {
+      chips.style.maxHeight = full + "px";
+      toggleLabel.textContent = "閉じる";
+      filterToggle.classList.add("is-open");
+    } else {
+      chips.style.maxHeight = collapsed + "px";
+      toggleLabel.textContent = "もっと見る";
+      filterToggle.classList.remove("is-open");
+    }
+  }
+
+  filterToggle.addEventListener("click", () => {
+    filterExpanded = !filterExpanded;
+    updateFilterCollapse();
+  });
+  window.addEventListener("resize", updateFilterCollapse);
+  updateFilterCollapse();
+
   // ── Auto-select shop from URL param (?shop=id) ────────────────
   const urlParams = new URLSearchParams(window.location.search);
   const preselect = urlParams.get("shop");
@@ -409,22 +483,125 @@ import { shops, categories } from "../data/shops.js";
     setTimeout(() => selectShop(preselect, true), 300);
   }
 
-  // ── Mobile: fix map height after layout paint ──────────────────
-  function fixSidebarHeight() {
-    const sidebar = document.getElementById("shops-sidebar");
-    if (!sidebar) return;
-    if (window.innerWidth < 768) {
-      sidebar.style.height = "45%";
-    } else {
-      sidebar.style.height = "100%";
-    }
+  // ── Mobile bottom-sheet ────────────────────────────────────────
+  // On phones the map fills the screen and the shop list becomes a
+  // draggable sheet (peek ⇄ full). Desktop keeps the fixed sidebar.
+  const sidebar = document.getElementById("shops-sidebar");
+  const grab = document.getElementById("sheet-grab");
+  const container = sidebar.parentElement;
+  const SNAP = { peek: 0.42, full: 0.9 };
+  let currentSnap = "peek";
+
+  const containerH = () => container.getBoundingClientRect().height;
+  const isMobile = () => window.innerWidth < 768;
+
+  // Keep the Leaflet zoom/attribution controls floating above the sheet
+  function liftControls(sheetPx) {
+    const b = Math.max(8, Math.min(sheetPx + 8, containerH() - 150));
+    container.style.setProperty("--ctrl-bottom", b + "px");
+  }
+
+  function setSheetHeight(px, animate) {
+    sidebar.style.transition = animate
+      ? "height .28s cubic-bezier(.4,0,.2,1)"
+      : "none";
+    sidebar.style.height = px + "px";
+    liftControls(px);
     map.invalidateSize();
   }
-  window.addEventListener("resize", fixSidebarHeight);
-  fixSidebarHeight();
+
+  function snapTo(name, animate = true) {
+    currentSnap = name;
+    setSheetHeight(SNAP[name] * containerH(), animate);
+  }
+
+  function layout() {
+    if (isMobile()) {
+      snapTo(currentSnap, false);
+    } else {
+      sidebar.style.transition = "";
+      sidebar.style.height = "";
+      container.style.removeProperty("--ctrl-bottom");
+      map.invalidateSize();
+    }
+  }
+  window.addEventListener("resize", layout);
+  layout();
+
+  // Drag the handle/header to resize the sheet (mobile)
+  let dragging = false, startY = 0, startH = 0, moved = 0;
+  function onDown(e) {
+    if (!isMobile()) return;
+    dragging = true;
+    moved = 0;
+    startY = e.clientY;
+    startH = sidebar.getBoundingClientRect().height;
+    sidebar.style.transition = "none";
+  }
+  function onMove(e) {
+    if (!dragging) return;
+    const dy = startY - e.clientY;
+    moved = Math.max(moved, Math.abs(dy));
+    const H = containerH();
+    const h = Math.max(0.22 * H, Math.min(0.92 * H, startH + dy));
+    sidebar.style.height = h + "px";
+    liftControls(h);
+    map.invalidateSize();
+    e.preventDefault();
+  }
+  function onUp() {
+    if (!dragging) return;
+    dragging = false;
+    if (moved < 6) {
+      // treat as a tap → toggle between peek and full
+      snapTo(currentSnap === "peek" ? "full" : "peek");
+      return;
+    }
+    const H = containerH();
+    const h = sidebar.getBoundingClientRect().height;
+    const mid = ((SNAP.peek + SNAP.full) / 2) * H;
+    snapTo(h >= mid ? "full" : "peek");
+  }
+  grab.addEventListener("pointerdown", onDown);
+  window.addEventListener("pointermove", onMove, { passive: false });
+  window.addEventListener("pointerup", onUp);
+  window.addEventListener("pointercancel", onUp);
 </script>
 
 <style>
+  /* Hide the scrollbar on the horizontally-scrollable filter chips (mobile) */
+  #filter-chips {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    transition: max-height .28s cubic-bezier(.4, 0, .2, 1);
+  }
+  #filter-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Category filter expand/collapse toggle (desktop) */
+  #filter-toggle svg {
+    transition: transform .25s ease;
+  }
+  #filter-toggle.is-open svg {
+    transform: rotate(180deg);
+  }
+
+  /* Bottom-sheet grab affordance */
+  #sheet-grab { cursor: grab; }
+  #sheet-grab:active { cursor: grabbing; }
+  @media (min-width: 768px) {
+    #sheet-grab { cursor: default; }
+  }
+
+  /* Mobile: float the Leaflet controls above the bottom-sheet */
+  @media (max-width: 767px) {
+    :global(.leaflet-bottom) {
+      bottom: var(--ctrl-bottom, 44%);
+      transition: bottom .28s cubic-bezier(.4, 0, .2, 1);
+    }
+  }
+
   .shop-active {
     background-color: rgba(232, 84, 106, 0.08);
     border-left: 2px solid #e8546a;
