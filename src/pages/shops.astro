@@ -102,7 +102,10 @@ import { shops, categories } from "../data/shops.js";
                   shop.category === 'souvenirshop' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' :
                   shop.category === 'Restaurant' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
                   shop.category === 'MobileShop' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
+                  shop.category === 'HobbyShop' ? 'bg-pink-500/10 text-pink-400 border-pink-500/20' :
                                                      'bg-white/10 text-white/50 border-white/20'
+
+
                                                  
                 }`}>
                   {shop.categoryLabel}
@@ -226,6 +229,7 @@ import { shops, categories } from "../data/shops.js";
       souvenirshop: "#a78bfa",
       Restaurant: "#f87171",
       MobileShop: "#facc15",
+      HobbyShop: "#f472b6",
           
     }[shop.category] || "#e8546a";
 

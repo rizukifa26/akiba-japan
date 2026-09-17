@@ -672,6 +672,26 @@ export const shops = [
       "/akibashitamachimonjyaoshikatsu/akibashitamachimonjyaoshikatsu3.jpg",
     ],
   },
+   {
+    id: "yumeoriya",
+    name: "夢織屋1号店 平成レトロ専門店",
+    category: "HobbyShop",
+    categoryLabel: "ホビーショップ",
+    description: "平成初期〜中期のアニメ、ゲーム関連商品を販売、買取致します。",
+    address: "〒101-0041 東京都千代田区神田須田町２丁目７−７ 福信ビル 1階",
+    phone: "080-9058-8729",
+    website: "https://www.yumeoriya.jp/store/",
+    logo: "logos/yumeoriya.png",
+    coinDiscount: 5,
+    featured: false,
+    lat: 35.69602913722118,
+    lng: 139.77316440548512,
+    images: [
+      "/yumeoriya/yumeoriya1.jpg",
+      "/yumeoriya/yumeoriya2.png",
+      "/yumeoriya/yumeoriya3.png",
+    ],
+  },
 ];
 
 export const categories = [
@@ -686,4 +706,5 @@ export const categories = [
   { value: "souvenirshop", label: "土産物店" },
   { value: "Restaurant", label: "飲食店" },
   { value: "MobileShop", label: "携帯ショップ" },
+  { value: "HobbyShop", label: "ホビーショップ" },
 ];
