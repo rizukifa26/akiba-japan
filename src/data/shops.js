@@ -607,9 +607,9 @@ export const shops = [
     lat: 35.69843451095233,
     lng: 139.77633182149447,
     images: [
-      "/public/yakitoriyakitontgenkikiyamidoriten/yakitoriyakitontgenkikiyamidoriten1.jpg",
-      "/public/yakitoriyakitontgenkikiyamidoriten/yakitoriyakitontgenkikiyamidoriten2.jpg",
-      "/public/yakitoriyakitontgenkikiyamidoriten/yakitoriyakitontgenkikiyamidoriten3.jpg",
+      "/yakitoriyakitontgenkikiyamidoriten/yakitoriyakitontgenkikiyamidoriten1.jpg",
+      "/yakitoriyakitontgenkikiyamidoriten/yakitoriyakitontgenkikiyamidoriten2.jpg",
+      "/yakitoriyakitontgenkikiyamidoriten/yakitoriyakitontgenkikiyamidoriten3.jpg",
     ],
   },
   {
@@ -627,9 +627,9 @@ export const shops = [
     lat: 35.69933942166616,
     lng: 139.76956852128677,
     images: [
-      "/public/yakitorongenkidenkigaikuchiten/yakitorongenkidenkigaikuchiten1.jpg",
-      "/public/yakitorongenkidenkigaikuchiten/yakitorongenkidenkigaikuchiten2.jpg",
-      "/public/yakitorongenkidenkigaikuchiten/yakitorongenkidenkigaikuchiten3.jpg",
+      "/yakitorongenkidenkigaikuchiten/yakitorongenkidenkigaikuchiten1.jpg",
+      "/yakitorongenkidenkigaikuchiten/yakitorongenkidenkigaikuchiten2.jpg",
+      "/yakitorongenkidenkigaikuchiten/yakitorongenkidenkigaikuchiten3.jpg",
     ],
   },
   {
@@ -681,7 +681,7 @@ export const shops = [
     address: "〒101-0041 東京都千代田区神田須田町２丁目７−７ 福信ビル 1階",
     phone: "080-9058-8729",
     website: "https://www.yumeoriya.jp/store/",
-    logo: "logos/yumeoriya.png",
+    logo: "/logos/yumeoriya.png",
     coinDiscount: 5,
     featured: false,
     lat: 35.69602913722118,

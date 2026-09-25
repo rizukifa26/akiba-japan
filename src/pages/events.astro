@@ -6,7 +6,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 // status: "done"（開催済み）/ "upcoming"（開催予定）
 const events = [
   {
-    id: "mosque-traffic-2026-03",
+    id: "kanda-akimatsuri-2026-10",
     status: "upcoming",
     category: "イベント",
     title: "神田ふれあい通り商店会による秋祭り",
@@ -72,9 +72,16 @@ const statusLabel = { done: "開催済み", upcoming: "開催予定" };
           <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
           <div class="absolute top-4 left-4 flex items-center gap-2">
             <span class="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-wide rounded-full bg-emerald-500/90 text-white px-3 py-1 backdrop-blur-sm">
-              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                <path d="M2.5 6.5L5 9L9.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              {featured.status === "done" ? (
+                <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <path d="M2.5 6.5L5 9L9.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              ) : (
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                  <path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              )}
               {statusLabel[featured.status]}
             </span>
             <span class="text-[11px] font-semibold tracking-wide rounded-full bg-black/50 text-white/90 border border-white/20 px-3 py-1 backdrop-blur-sm">
