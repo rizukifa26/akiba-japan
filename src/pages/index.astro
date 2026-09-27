@@ -177,6 +177,48 @@ const coinPackages = [
     </div>
   </section>
 
+  <!-- ─── SECTION: CHIHOU RENKEI TEASER ──────────────── -->
+  <section class="py-16 sm:py-20 bg-[#0d1623] relative overflow-hidden">
+    <div class="absolute inset-0 chihou-grid opacity-40" aria-hidden="true"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+
+        <div class="max-w-xl">
+          <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">Regional Collaboration</p>
+          <h2 class="text-2xl sm:text-3xl font-black text-white leading-tight mb-4">
+            地方の魅力を、<span class="text-primary">秋葉原</span>から世界へ。
+          </h2>
+          <p class="text-white/60 text-sm sm:text-base leading-relaxed">
+            全国の自治体・酒蔵・農家・地域企業と連携し、<br class="hidden sm:block"/>
+            食・酒・文化・観光を秋葉原から発信します。
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-3 shrink-0">
+          <a
+            href="/about#chihou"
+            class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold text-sm transition-colors duration-200 shadow-lg shadow-primary/20"
+          >
+            地方連携について見る
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a
+            href="/akiba-japan-flyer.pdf"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg border border-white/30 hover:border-white/60 hover:bg-white/5 text-white font-semibold text-sm transition-colors duration-200"
+          >
+            フライヤーを見る
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ─── SECTION 4: COIN TEASER ────────────────────── -->
   <section id="coin-teaser" class="py-24 bg-black relative overflow-hidden">
 
@@ -301,5 +343,12 @@ const coinPackages = [
 
   .hero-heading {
     font-size: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .chihou-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 44px 44px;
   }
 </style>

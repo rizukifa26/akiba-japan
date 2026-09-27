@@ -46,6 +46,14 @@ const activities = [
     desc: "海外からの観光客や在日外国人との交流を通じ、世界との相互理解を深めます。",
   },
 ];
+
+const chihouServices = [
+  { num: "01", title: "地酒・特産品のPR", desc: "地域の地酒、食品、農産物、工芸品などを秋葉原で紹介。" },
+  { num: "02", title: "地方マルシェの開催", desc: "地域事業者を秋葉原に招き、特産品販売・観光PR・交流イベントを開催。" },
+  { num: "03", title: "自治体・観光PR", desc: "自治体や観光協会と連携し、秋葉原を活用した地域PR・観光振興を実施。" },
+  { num: "04", title: "秋葉原の店舗・企業との連携", desc: "秋葉原の飲食店・店舗・企業などと地域事業者をつなぎ、コラボレーションを創出。" },
+  { num: "05", title: "インバウンドへの情報発信", desc: "世界から人が集まる秋葉原を活用し、地方の魅力を国内外の観光客へ発信。" },
+];
 ---
 
 <BaseLayout title="組織について | AKIBA JAPAN" description="NPO法人国際AKIBA総合支援協会について。設立背景、ミッション、活動内容をご紹介します。">
@@ -169,6 +177,87 @@ const activities = [
             <p class="text-white/50 text-sm leading-relaxed">{desc}</p>
           </div>
         ))}
+      </div>
+
+      <!-- Featured: 地方連携 -->
+      <div class="mt-5 bg-white/5 border border-primary/20 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-start gap-6 hover:bg-white/[0.08] hover:border-primary/40 transition-all duration-300">
+        <div class="text-4xl shrink-0">🗾</div>
+        <div class="flex-1">
+          <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase font-bold mb-2">New Initiative</p>
+          <h3 class="text-white font-bold text-xl mb-2">地方連携</h3>
+          <p class="text-white/50 text-sm leading-relaxed mb-4">全国の地方自治体・観光協会・酒蔵・農家・地域企業などをつなぎ、地域の「食・酒・文化・観光・人」を秋葉原から発信する取り組みを進めています。</p>
+          <a href="#chihou" class="inline-flex items-center gap-2 text-primary text-sm font-semibold hover:gap-3 transition-all duration-200">
+            詳しく見る
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── CHIHOU RENKEI ────────────────────────────────── -->
+  <section id="chihou" class="py-24 bg-[#0a0a0a]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="mb-14">
+        <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">Regional Collaboration</p>
+        <h2 class="text-3xl sm:text-4xl font-black text-white leading-tight mb-5">
+          地方と秋葉原をつなぐ。
+        </h2>
+        <p class="text-white/60 text-base sm:text-lg leading-relaxed max-w-2xl">
+          AKIBA JAPANは、秋葉原と全国の地方自治体・観光協会・酒蔵・農家・地域企業などをつなぎ、
+          地域の「食・酒・文化・観光・人」を秋葉原から発信する取り組みを進めています。
+        </p>
+      </div>
+
+      <!-- 5 capabilities -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-14">
+        {chihouServices.map(({ num, title, desc }) => (
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/[0.08] transition-colors duration-200">
+            <span class="text-primary font-mono text-xs font-bold tracking-widest block mb-3">{num}</span>
+            <h3 class="text-white font-bold text-base mb-2">{title}</h3>
+            <p class="text-white/50 text-sm leading-relaxed">{desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Event ideas -->
+      <h3 class="text-white font-black text-xl mb-6">こんな企画ができます</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-14">
+        <div class="border border-white/10 bg-white/5 rounded-2xl p-6">
+          <p class="text-primary font-mono text-xs font-bold tracking-widest mb-3">PLAN 01</p>
+          <h4 class="text-white font-bold text-lg mb-2">全国地酒 × AKIBA</h4>
+          <p class="text-white/50 text-sm leading-relaxed">全国の酒蔵・地酒を秋葉原で紹介。地域ごとの地酒をテーマにしたPRイベントや、秋葉原の店舗とのコラボレーションなどを企画します。</p>
+        </div>
+        <div class="border border-white/10 bg-white/5 rounded-2xl p-6">
+          <p class="text-primary font-mono text-xs font-bold tracking-widest mb-3">PLAN 02</p>
+          <h4 class="text-white font-bold text-lg mb-2">AKIBA 地方マルシェ</h4>
+          <p class="text-white/50 text-sm leading-relaxed">地域の特産品・観光・文化を、秋葉原でまるごとPR。販売 × 観光PR × 地域交流 × 情報発信 を一つのイベントに。</p>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="flex flex-wrap gap-4">
+        <a
+          href="/akiba-japan-flyer.pdf"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold text-sm transition-colors duration-200 shadow-lg shadow-primary/20"
+        >
+          フライヤーを見る (PDF)
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M6 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1v-3M10 2h4v4M8 8l6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg border border-white/30 hover:border-white/60 hover:bg-white/5 text-white font-semibold text-sm transition-colors duration-200"
+        >
+          お問い合わせ・ご相談
+        </a>
       </div>
 
     </div>
