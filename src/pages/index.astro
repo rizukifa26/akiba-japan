@@ -177,28 +177,47 @@ const coinPackages = [
     </div>
   </section>
 
-  <!-- ─── BANNER: CHIHOU RENKEI ───────────────────────── -->
-  <div class="bg-[#0d1623] border-y border-white/8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-      <div class="flex items-center gap-3">
-        <span class="text-base" aria-hidden="true">🗾</span>
-        <p class="text-sm text-white/80">
-          <span class="font-semibold text-white">地方自治体・地域事業者の方へ</span>
-          <span class="text-white/40 mx-2 hidden sm:inline">—</span>
-          <span class="text-white/55 hidden sm:inline">秋葉原で地域をPRしませんか？</span>
-        </p>
+  <!-- ─── SECTION: CHIHOU RENKEI TEASER ──────────────── -->
+  <section class="py-16 sm:py-20 bg-[#0d1623] relative overflow-hidden">
+    <div class="absolute inset-0 chihou-grid opacity-40" aria-hidden="true"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+
+        <div class="max-w-xl">
+          <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">Regional Collaboration</p>
+          <h2 class="text-2xl sm:text-3xl font-black text-white leading-tight mb-4">
+            地方の魅力を、<span class="text-primary">秋葉原</span>から世界へ。
+          </h2>
+          <p class="text-white/60 text-sm sm:text-base leading-relaxed">
+            全国の自治体・酒蔵・農家・地域企業と連携し、<br class="hidden sm:block"/>
+            食・酒・文化・観光を秋葉原から発信します。
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-3 shrink-0">
+          <a
+            href="/about#chihou"
+            class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold text-sm transition-colors duration-200 shadow-lg shadow-primary/20"
+          >
+            地方連携について見る
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a
+            href="/akiba-japan-flyer.pdf"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg border border-white/30 hover:border-white/60 hover:bg-white/5 text-white font-semibold text-sm transition-colors duration-200"
+          >
+            フライヤーを見る
+          </a>
+        </div>
+
       </div>
-      <a
-        href="/about#chihou"
-        class="flex items-center gap-1.5 text-primary text-sm font-semibold shrink-0 hover:gap-2.5 transition-all duration-200"
-      >
-        詳しく見る
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
     </div>
-  </div>
+  </section>
 
   <!-- ─── SECTION 4: COIN TEASER ────────────────────── -->
   <section id="coin-teaser" class="py-24 bg-black relative overflow-hidden">
