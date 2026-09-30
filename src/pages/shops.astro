@@ -192,6 +192,7 @@ import { shops, categories } from "../data/shops.js";
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       subdomains: "abc",
       maxZoom: 19,
+      className: "tiles-grayscale",
     }
   ).addTo(map);
 
@@ -694,5 +695,8 @@ import { shops, categories } from "../data/shops.js";
   }
   :global(.popup-carousel::-webkit-scrollbar) {
     display: none;
+  }
+  :global(.tiles-grayscale) {
+    filter: grayscale(100%) brightness(1.05);
   }
 </style>
