@@ -12,6 +12,7 @@ interface Props {
   ogImage?: string;
   noIndex?: boolean;
   noFooter?: boolean;
+  lang?: string;
 }
 
 const {
@@ -22,6 +23,7 @@ const {
   ogImage = "/og-default.jpg",
   noIndex = false,
   noFooter = false,
+  lang = "ja",
 } = Astro.props;
 
 const SITE_NAME = "AKIBA JAPAN";
@@ -32,7 +34,7 @@ const ogImageURL      = new URL(ogImage, Astro.site ?? Astro.url.origin).toStrin
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -70,18 +72,18 @@ const ogImageURL      = new URL(ogImage, Astro.site ?? Astro.url.origin).toStrin
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap"
     />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap"
       media="print"
       onload="this.media='all'"
     />
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap"
       />
     </noscript>
 
@@ -93,10 +95,10 @@ const ogImageURL      = new URL(ogImage, Astro.site ?? Astro.url.origin).toStrin
     <title>{title}</title>
   </head>
   <body class="min-h-screen flex flex-col bg-black text-white">
-    <Header />
+    <Header lang={lang} />
     <main class="flex-1" id="main-content">
       <slot />
     </main>
-    {!noFooter && <Footer />}
+    {!noFooter && <Footer lang={lang} />}
   </body>
 </html>

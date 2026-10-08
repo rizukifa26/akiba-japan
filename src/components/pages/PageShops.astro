@@ -1,13 +1,31 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { shops, categories } from "../data/shops.js";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { useTranslations, type Lang } from "../../i18n/translations";
+import { shops, categories } from "../../data/shops.js";
+
+interface Props {
+  lang?: "ja" | "en";
+}
+
+const { lang = "ja" } = Astro.props;
+const t = useTranslations(lang);
+const s = t.shops;
+const catLabels = t.categoryLabels;
+
+const base = lang === "en" ? "/en" : "/jp";
+
+const translatedCategories = categories.map(({ value, label }) => ({
+  value,
+  label: catLabels[value] ?? label,
+}));
+
+const translatedShops = shops.map((shop) => ({
+  ...shop,
+  categoryLabel: catLabels[shop.category] ?? shop.categoryLabel,
+}));
 ---
 
-<BaseLayout
-  title="加盟店マップ | AKIBA JAPAN"
-  description="AKIBA JAPANに加盟している秋葉原・神田エリアの店舗マップ。Akiba Coin対応店舗を地図で探せます。"
-  noFooter={true}
->
+<BaseLayout title={s.pageTitle} description={s.pageDescription} lang={lang} noFooter={true}>
   <Fragment slot="head">
     <link
       rel="stylesheet"
@@ -35,9 +53,9 @@ import { shops, categories } from "../data/shops.js";
         <div class="px-4 pt-1 md:pt-4 pb-3 border-b border-white/10">
           <p class="text-primary font-mono text-[10px] tracking-[0.2em] uppercase mb-1">Member Shops</p>
           <div class="flex items-baseline justify-between">
-            <h1 class="text-lg font-black text-white leading-tight">加盟店マップ</h1>
+            <h1 class="text-lg font-black text-white leading-tight">{s.title}</h1>
             <span class="font-mono text-xs text-white/30">
-              <span id="visible-count">{shops.length}</span>店舗
+              <span id="visible-count">{shops.length}</span>{lang === "en" ? " shops" : "店舗"}
             </span>
           </div>
         </div>
@@ -49,7 +67,7 @@ import { shops, categories } from "../data/shops.js";
           id="filter-chips"
           class="flex flex-nowrap md:flex-wrap gap-1.5 overflow-x-auto md:overflow-hidden"
         >
-          {categories.map(({ value, label }) => (
+          {translatedCategories.map(({ value, label }) => (
             <button
               class="filter-btn shrink-0 whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-semibold border transition-all duration-200"
               data-filter={value}
@@ -67,13 +85,13 @@ import { shops, categories } from "../data/shops.js";
           <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
             <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <span class="toggle-label">もっと見る</span>
+          <span class="toggle-label">{lang === "en" ? "Show more" : "もっと見る"}</span>
         </button>
       </div>
 
       <!-- Shop list -->
       <ul id="shops-list" class="flex-1 overflow-y-auto overscroll-contain">
-        {shops.map((shop) => (
+        {translatedShops.map((shop) => (
           <li>
             <button
               class="shop-item w-full text-left px-4 py-3 border-b border-white/[0.06] hover:bg-white/[0.04] transition-colors duration-150 group"
@@ -86,7 +104,7 @@ import { shops, categories } from "../data/shops.js";
                 </span>
                 {shop.featured && (
                   <span class="shrink-0 text-[9px] font-bold tracking-widest uppercase bg-primary/20 text-primary border border-primary/30 rounded-full px-1.5 py-0.5">
-                    おすすめ
+                    {lang === "en" ? "Featured" : "おすすめ"}
                   </span>
                 )}
               </div>
@@ -104,13 +122,10 @@ import { shops, categories } from "../data/shops.js";
                   shop.category === 'MobileShop' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
                   shop.category === 'HobbyShop' ? 'bg-pink-500/10 text-pink-400 border-pink-500/20' :
                                                      'bg-white/10 text-white/50 border-white/20'
-
-
-                                                 
                 }`}>
                   {shop.categoryLabel}
                 </span>
-                <span class="text-[10px] text-white/30 italic">Coin 情報 準備中</span>
+                <span class="text-[10px] text-white/30 italic">Coin {lang === "en" ? "info coming soon" : "情報 準備中"}</span>
               </div>
             </button>
           </li>
@@ -120,13 +135,13 @@ import { shops, categories } from "../data/shops.js";
       <!-- Sidebar footer CTA -->
       <div class="px-4 py-3 border-t border-white/10 shrink-0">
         <a
-          href="/join"
+          href={`${base}/join`}
           class="flex items-center justify-center gap-2 w-full py-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-xs font-semibold border border-primary/20 transition-colors duration-200"
         >
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
             <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
           </svg>
-          店舗として参加する
+          {s.joinShopCta}
         </a>
       </div>
     </aside>
@@ -140,7 +155,7 @@ import { shops, categories } from "../data/shops.js";
 <!-- Leaflet JS (must load before inline script below) -->
 <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<script is:inline define:vars={{ shops, categories }}>
+<script is:inline define:vars={{ shops: translatedShops, categories: translatedCategories }}>
   // ── Map init ───────────────────────────────────────────────────
   const map = L.map("map", {
     center: [35.6985, 139.7718],
@@ -156,7 +171,7 @@ import { shops, categories } from "../data/shops.js";
     onAdd() {
       const wrapper = L.DomUtil.create("div", "leaflet-bar locate-wrapper");
       const btn = L.DomUtil.create("button", "locate-btn", wrapper);
-      btn.title = "現在地を表示";
+      btn.title = document.documentElement.lang === "en" ? "Show my location" : "現在地を表示";
       btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="9" stroke-dasharray="2 3"/></svg>`;
       let locMarker = null;
       L.DomEvent.on(btn, "click", L.DomEvent.stopPropagation)
@@ -174,7 +189,7 @@ import { shops, categories } from "../data/shops.js";
               fillOpacity: 1,
               color: "#fff",
               weight: 2,
-            }).addTo(map).bindPopup("現在地");
+            }).addTo(map).bindPopup(document.documentElement.lang === "en" ? "Your location" : "現在地");
             map.flyTo([lat, lng], 16, { duration: 0.8 });
           },
           () => { btn.classList.remove("locating"); }
@@ -230,7 +245,6 @@ import { shops, categories } from "../data/shops.js";
       Restaurant: "#f87171",
       MobileShop: "#facc15",
       HobbyShop: "#f472b6",
-          
     }[shop.category] || "#e8546a";
 
     const photoIcon = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="#ccc" stroke="none"/><path d="M21 15l-5-5-4 4-2-2-4 4"/></svg>`;
@@ -243,7 +257,7 @@ import { shops, categories } from "../data/shops.js";
           </div>`).join("")
       : `<div style="flex:0 0 100%;scroll-snap-align:start;height:160px;background:#f2f2f2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
           ${photoIcon}
-          <span style="font-size:10px;color:#c0c0c0;">写真なし</span>
+          <span style="font-size:10px;color:#c0c0c0;">${document.documentElement.lang === "en" ? "No photo" : "写真なし"}</span>
         </div>`;
 
     const descRow = shop.description ? `
@@ -264,12 +278,15 @@ import { shops, categories } from "../data/shops.js";
     const websiteBtn = shop.website ? `
       <a href="${shop.website}" target="_blank" rel="noopener noreferrer"
         style="display:block;margin-top:12px;padding:8px 0;background:#e8546a;color:#fff;text-align:center;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;letter-spacing:.04em;">
-        詳しくはこちら →
+        ${document.documentElement.lang === "en" ? "View Details →" : "詳しくはこちら →"}
       </a>` : '';
 
     const hasMeta = shop.description || shop.address || shop.phone;
     const divider = hasMeta && (shop.address || shop.phone || shop.website) && shop.description
       ? `<div style="border-top:1px solid #f0f0f0;margin-top:10px;"></div>` : '';
+
+    const isEn = document.documentElement.lang === "en";
+    const featuredLabel = isEn ? "Featured" : "おすすめ";
 
     return `<div style="font-family:'Noto Sans JP',sans-serif;width:300px;">
       <!-- Carousel -->
@@ -287,7 +304,7 @@ import { shops, categories } from "../data/shops.js";
       <div style="padding:12px 14px 14px;">
         <div style="display:flex;align-items:center;gap:5px;margin-bottom:8px;">
           <span style="font-size:10px;font-weight:700;color:${catColor};background:${catColor}15;border:1px solid ${catColor}30;border-radius:4px;padding:2px 7px;">${shop.categoryLabel}</span>
-          ${shop.featured ? '<span style="font-size:9px;font-weight:700;background:#e8546a;color:#fff;border-radius:4px;padding:2px 7px;letter-spacing:.04em;">おすすめ</span>' : ""}
+          ${shop.featured ? `<span style="font-size:9px;font-weight:700;background:#e8546a;color:#fff;border-radius:4px;padding:2px 7px;letter-spacing:.04em;">${featuredLabel}</span>` : ""}
         </div>
         <p style="font-size:15px;font-weight:700;color:#111;margin-bottom:8px;line-height:1.3;">${shop.name}</p>
         ${descRow}
@@ -336,11 +353,9 @@ import { shops, categories } from "../data/shops.js";
     if (activeEl) activeEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
 
     // Map interaction
-    // On mobile, collapse the bottom-sheet so the marker + popup stay visible
     if (flyTo && window.innerWidth < 768) snapTo("peek");
     if (flyTo) {
       map.flyTo([entry.shop.lat, entry.shop.lng], 17, { duration: 0.7 });
-      // open popup after fly completes
       map.once("moveend", () => entry.marker.openPopup());
     } else {
       entry.marker.openPopup();
@@ -433,22 +448,22 @@ import { shops, categories } from "../data/shops.js";
   });
 
   // ── Desktop: collapse category chips to 2 rows with a toggle ────
-  // (Mobile keeps the horizontal-scroll single row — no toggle.)
   const chips = document.getElementById("filter-chips");
   const filterToggle = document.getElementById("filter-toggle");
   const toggleLabel = filterToggle.querySelector(".toggle-label");
   let filterExpanded = false;
 
+  const isEn = document.documentElement.lang === "en";
+
   function collapsedChipsHeight() {
     const items = chips.querySelectorAll(".filter-btn");
     if (!items.length) return 0;
     const gap = parseFloat(getComputedStyle(chips).rowGap) || 6;
-    return items[0].offsetHeight * 2 + gap; // two rows
+    return items[0].offsetHeight * 2 + gap;
   }
 
   function updateFilterCollapse() {
     if (window.innerWidth < 768) {
-      // mobile: single scrolling row, no collapse
       chips.style.maxHeight = "";
       filterToggle.style.display = "none";
       return;
@@ -456,7 +471,6 @@ import { shops, categories } from "../data/shops.js";
     const collapsed = collapsedChipsHeight();
     const full = chips.scrollHeight;
     if (full <= collapsed + 2) {
-      // everything fits in ≤ 2 rows → toggle not needed
       filterToggle.style.display = "none";
       chips.style.maxHeight = "";
       return;
@@ -464,11 +478,11 @@ import { shops, categories } from "../data/shops.js";
     filterToggle.style.display = "flex";
     if (filterExpanded) {
       chips.style.maxHeight = full + "px";
-      toggleLabel.textContent = "閉じる";
+      toggleLabel.textContent = isEn ? "Show less" : "閉じる";
       filterToggle.classList.add("is-open");
     } else {
       chips.style.maxHeight = collapsed + "px";
-      toggleLabel.textContent = "もっと見る";
+      toggleLabel.textContent = isEn ? "Show more" : "もっと見る";
       filterToggle.classList.remove("is-open");
     }
   }
@@ -488,8 +502,6 @@ import { shops, categories } from "../data/shops.js";
   }
 
   // ── Mobile bottom-sheet ────────────────────────────────────────
-  // On phones the map fills the screen and the shop list becomes a
-  // draggable sheet (peek ⇄ full). Desktop keeps the fixed sidebar.
   const sidebar = document.getElementById("shops-sidebar");
   const grab = document.getElementById("sheet-grab");
   const container = sidebar.parentElement;
@@ -499,7 +511,6 @@ import { shops, categories } from "../data/shops.js";
   const containerH = () => container.getBoundingClientRect().height;
   const isMobile = () => window.innerWidth < 768;
 
-  // Keep the Leaflet zoom/attribution controls floating above the sheet
   function liftControls(sheetPx) {
     const b = Math.max(8, Math.min(sheetPx + 8, containerH() - 150));
     container.style.setProperty("--ctrl-bottom", b + "px");
@@ -557,7 +568,6 @@ import { shops, categories } from "../data/shops.js";
     if (!dragging) return;
     dragging = false;
     if (moved < 6) {
-      // treat as a tap → toggle between peek and full
       snapTo(currentSnap === "peek" ? "full" : "peek");
       return;
     }

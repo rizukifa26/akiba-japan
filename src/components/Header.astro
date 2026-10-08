@@ -1,17 +1,40 @@
 ---
+import { useTranslations, type Lang } from "../i18n/translations";
+
+interface Props {
+  lang?: string;
+}
+
+const { lang = "ja" } = Astro.props;
+const t = useTranslations(lang as Lang);
+
+const base = lang === "en" ? "/en" : "/jp";
+
 const navLinks = [
-  { href: "/", label: "ホーム" },
-  { href: "/about", label: "組織について" },
-   { href: "/shops-list", label: "加盟店一覧" },
-  { href: "/shops", label: "加盟店マップ" },
-  { href: "/coin", label: "Akiba Coin" },
-  { href: "/events", label: "イベント" },
-  { href: "/rules", label: "会員規則" },
-  { href: "/join", label: "会員登録" },
-  { href: "/contact", label: "お問い合わせ" },
+  { href: `${base}/`, label: t.nav.home },
+  { href: `${base}/about`, label: t.nav.about },
+  { href: `${base}/shops-list`, label: t.nav.shopsList },
+  { href: `${base}/shops`, label: t.nav.shops },
+  { href: `${base}/coin`, label: t.nav.coin },
+  { href: `${base}/events`, label: t.nav.events },
+  { href: `${base}/rules`, label: t.nav.rules },
+  { href: `${base}/join`, label: t.nav.join },
+  { href: `${base}/contact`, label: t.nav.contact },
 ];
 
 const currentPath = Astro.url.pathname;
+
+// Language switcher paths
+const isEn = currentPath.startsWith("/en");
+const isJa = currentPath.startsWith("/jp");
+const pathWithoutLang = isEn
+  ? currentPath.replace(/^\/en/, "") || "/"
+  : isJa
+  ? currentPath.replace(/^\/jp/, "") || "/"
+  : "/";
+
+const jaPath = pathWithoutLang === "/" ? "/jp" : `/jp${pathWithoutLang}`;
+const enPath = pathWithoutLang === "/" ? "/en" : `/en${pathWithoutLang}`;
 ---
 
 <header class="sticky top-0 z-50 bg-black border-b border-white/10">
@@ -19,7 +42,7 @@ const currentPath = Astro.url.pathname;
     <div class="flex items-center justify-between h-16">
 
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-2 shrink-0">
+      <a href={lang === "en" ? "/en" : "/jp"} class="flex items-center gap-2 shrink-0">
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <rect width="32" height="32" rx="6" fill="#e8546a"/>
           <path d="M8 24L16 8L24 24" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -32,7 +55,7 @@ const currentPath = Astro.url.pathname;
       </a>
 
       <!-- Desktop Nav -->
-      <nav class="hidden lg:flex items-center gap-1" aria-label="メインナビゲーション">
+      <nav class="hidden lg:flex items-center gap-1" aria-label={lang === "en" ? "Main navigation" : "メインナビゲーション"}>
         {navLinks.map(({ href, label }) => (
           <a
             href={href}
@@ -45,13 +68,33 @@ const currentPath = Astro.url.pathname;
             {label}
           </a>
         ))}
+
+        <!-- Language Switcher -->
+        <div class="flex items-center gap-1 ml-2 border border-white/20 rounded-full p-0.5">
+          <a
+            href={jaPath}
+            class={`px-2.5 py-1 rounded-full text-xs font-bold transition-colors ${
+              lang === "ja" ? "bg-primary text-white" : "text-white/50 hover:text-white"
+            }`}
+          >
+            JA
+          </a>
+          <a
+            href={enPath}
+            class={`px-2.5 py-1 rounded-full text-xs font-bold transition-colors ${
+              lang === "en" ? "bg-primary text-white" : "text-white/50 hover:text-white"
+            }`}
+          >
+            EN
+          </a>
+        </div>
       </nav>
 
       <!-- Mobile hamburger -->
       <button
         id="hamburger"
         class="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 rounded focus:outline-none focus:ring-2 focus:ring-primary"
-        aria-label="メニューを開く"
+        aria-label={lang === "en" ? "Open menu" : "メニューを開く"}
         aria-expanded="false"
         aria-controls="mobile-menu"
       >
@@ -67,7 +110,7 @@ const currentPath = Astro.url.pathname;
     id="mobile-menu"
     class="lg:hidden hidden border-t border-white/10 bg-black"
     role="navigation"
-    aria-label="モバイルナビゲーション"
+    aria-label={lang === "en" ? "Mobile navigation" : "モバイルナビゲーション"}
   >
     <nav class="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
       {navLinks.map(({ href, label }) => (
@@ -82,6 +125,29 @@ const currentPath = Astro.url.pathname;
           {label}
         </a>
       ))}
+
+      <!-- Mobile Language Switcher -->
+      <div class="flex items-center gap-1 mt-2 px-3">
+        <span class="text-white/40 text-xs mr-2">Language:</span>
+        <div class="flex items-center gap-1 border border-white/20 rounded-full p-0.5">
+          <a
+            href={jaPath}
+            class={`px-2.5 py-1 rounded-full text-xs font-bold transition-colors ${
+              lang === "ja" ? "bg-primary text-white" : "text-white/50 hover:text-white"
+            }`}
+          >
+            JA
+          </a>
+          <a
+            href={enPath}
+            class={`px-2.5 py-1 rounded-full text-xs font-bold transition-colors ${
+              lang === "en" ? "bg-primary text-white" : "text-white/50 hover:text-white"
+            }`}
+          >
+            EN
+          </a>
+        </div>
+      </div>
     </nav>
   </div>
 </header>

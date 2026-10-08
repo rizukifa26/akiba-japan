@@ -1,33 +1,28 @@
 ---
-// SETUP FORMSPREE:
-// 1. Daftar di formspree.io (gratis, tidak perlu kartu kredit)
-// 2. Klik "New Form" → beri nama → copy Form ID (format: xxxxxxxx)
-// 3. Ganti PLACEHOLDER_ID di bawah dengan Form ID kamu
-// 4. Verifikasi email yang masuk lewat dashboard Formspree
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { useTranslations, type Lang } from "../../i18n/translations";
 
-import BaseLayout from "../layouts/BaseLayout.astro";
+interface Props {
+  lang?: "ja" | "en";
+}
+
+const { lang = "ja" } = Astro.props;
+const t = useTranslations(lang);
+const c = t.contact;
 
 const FORMSPREE_ID = "xdavdkyk";
-
-const inquiryTypes = [
-  { value: "", label: "お問い合わせの種類を選択" },
-  { value: "general", label: "一般的なお問い合わせ" },
-  { value: "membership", label: "会員について" },
-  { value: "coin", label: "アキバコインについて" },
-  { value: "media", label: "取材・メディア" },
-];
 
 const contactInfo = [
   {
     icon: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="5" width="15" height="10" rx="2" stroke="#e8546a" stroke-width="1.5"/><path d="M2.5 7l7.5 5 7.5-5" stroke="#e8546a" stroke-width="1.5" stroke-linecap="round"/></svg>`,
-    label: "メールアドレス",
+    label: c.emailLabel,
     value: "akibajapanorg@gmail.com",
-    note: "通常2〜3営業日以内に返信します",
+    note: c.emailNote,
   },
   {
     icon: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2C7.238 2 5 4.238 5 7c0 4 5 11 5 11s5-7 5-11c0-2.762-2.238-5-5-5z" stroke="#e8546a" stroke-width="1.5"/><circle cx="10" cy="7" r="1.5" stroke="#e8546a" stroke-width="1.5"/></svg>`,
-    label: "所在地",
-    value: "東京都千代田区神田須田町2‐17‐4 山梅ビル1F",
+    label: c.addressLabel,
+    value: c.addressValue,
     note: "",
   },
 ];
@@ -51,19 +46,17 @@ const sns = [
 ];
 ---
 
-<BaseLayout
-  title="お問い合わせ | AKIBA JAPAN"
-  description="AKIBA JAPANへのお問い合わせ。会員登録・アキバコイン・取材依頼など、お気軽にご連絡ください。"
->
+<BaseLayout title={c.pageTitle} description={c.pageDescription} lang={lang}>
 
   <!-- ─── PAGE HEADER ─────────────────────────────────── -->
   <section class="bg-black border-b border-white/10 py-16 sm:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-4">Contact</p>
-      <h1 class="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight">お問い合わせ</h1>
+      <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-4">{c.eyebrow}</p>
+      <h1 class="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight">{c.title}</h1>
       <p class="text-white/55 text-lg max-w-xl leading-relaxed">
-        ご質問・ご相談はフォームよりお気軽にどうぞ。<br/>
-        通常2〜3営業日以内にご返信いたします。
+        {c.subtitle.split("\n").map((line, i) => (
+          i === 0 ? <>{line}<br/></> : line
+        ))}
       </p>
     </div>
   </section>
@@ -89,10 +82,11 @@ const sns = [
                 <path d="M8.5 14.5l4 4 7-8" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
-            <h2 class="text-white font-black text-xl mb-2">送信が完了しました</h2>
+            <h2 class="text-white font-black text-xl mb-2">{c.successTitle}</h2>
             <p class="text-white/60 text-sm leading-relaxed">
-              お問い合わせありがとうございます。<br/>
-              2〜3営業日以内にご登録のメールアドレスへご返信いたします。
+              {c.successBody.split("\n").map((line, i) => (
+                i === 0 ? <>{line}<br/></> : line
+              ))}
             </p>
           </div>
 
@@ -108,7 +102,7 @@ const sns = [
               <path d="M9 8v3" stroke="#e8546a" stroke-width="1.5" stroke-linecap="round"/>
               <circle cx="9" cy="13" r="0.7" fill="#e8546a"/>
             </svg>
-            <p class="text-primary text-sm">送信に失敗しました。しばらくしてから再度お試しください。</p>
+            <p class="text-primary text-sm">{c.errorMessage}</p>
           </div>
 
           <!-- Contact form -->
@@ -120,77 +114,77 @@ const sns = [
             class="space-y-6"
           >
             <!-- Hidden: language hint for Formspree -->
-            <input type="hidden" name="_language" value="ja" />
+            <input type="hidden" name="_language" value={lang} />
 
-            <!-- お名前 -->
+            <!-- Name -->
             <div class="form-group">
               <label for="name" class="form-label">
-                お名前
-                <span class="text-primary ml-1 text-xs">必須</span>
+                {c.labelName}
+                <span class="text-primary ml-1 text-xs">{c.required}</span>
               </label>
               <input
                 type="text"
                 id="name"
                 name="name"
                 autocomplete="name"
-                placeholder="山田 太郎"
+                placeholder={c.placeholderName}
                 class="form-input"
                 required
                 aria-required="true"
                 aria-describedby="name-error"
               />
-              <p id="name-error" class="form-error hidden" role="alert">お名前を入力してください。</p>
+              <p id="name-error" class="form-error hidden" role="alert">{c.errorName}</p>
             </div>
 
-            <!-- メールアドレス -->
+            <!-- Email -->
             <div class="form-group">
               <label for="email" class="form-label">
-                メールアドレス
-                <span class="text-primary ml-1 text-xs">必須</span>
+                {c.labelEmail}
+                <span class="text-primary ml-1 text-xs">{c.required}</span>
               </label>
               <input
                 type="email"
                 id="email"
                 name="email"
                 autocomplete="email"
-                placeholder="taro@example.com"
+                placeholder={c.placeholderEmail}
                 class="form-input"
                 required
                 aria-required="true"
                 aria-describedby="email-error"
               />
-              <p id="email-error" class="form-error hidden" role="alert">有効なメールアドレスを入力してください。</p>
+              <p id="email-error" class="form-error hidden" role="alert">{c.errorEmail}</p>
             </div>
 
-            <!-- 件名 -->
+            <!-- Subject -->
             <div class="form-group">
               <label for="subject" class="form-label">
-                件名
-                <span class="text-primary ml-1 text-xs">必須</span>
+                {c.labelSubject}
+                <span class="text-primary ml-1 text-xs">{c.required}</span>
               </label>
               <input
                 type="text"
                 id="subject"
                 name="subject"
-                placeholder="お問い合わせの件名"
+                placeholder={c.placeholderSubject}
                 class="form-input"
                 required
                 aria-required="true"
                 aria-describedby="subject-error"
               />
-              <p id="subject-error" class="form-error hidden" role="alert">件名を入力してください。</p>
+              <p id="subject-error" class="form-error hidden" role="alert">{c.errorSubject}</p>
             </div>
 
-            <!-- お問い合わせの種類 -->
+            <!-- Inquiry type -->
             <div class="form-group">
-              <label for="type" class="form-label">お問い合わせの種類</label>
+              <label for="type" class="form-label">{c.labelType}</label>
               <div class="relative">
                 <select
                   id="type"
                   name="inquiry_type"
                   class="form-input appearance-none pr-10 cursor-pointer"
                 >
-                  {inquiryTypes.map(({ value, label }) => (
+                  {c.inquiryTypes.map(({ value, label }) => (
                     <option value={value}>{label}</option>
                   ))}
                 </select>
@@ -203,38 +197,39 @@ const sns = [
               </div>
             </div>
 
-            <!-- メッセージ -->
+            <!-- Message -->
             <div class="form-group">
               <label for="message" class="form-label">
-                メッセージ
-                <span class="text-primary ml-1 text-xs">必須</span>
+                {c.labelMessage}
+                <span class="text-primary ml-1 text-xs">{c.required}</span>
               </label>
               <textarea
                 id="message"
                 name="message"
                 rows="6"
-                placeholder="お問い合わせ内容をご記入ください..."
+                placeholder={c.placeholderMessage}
                 class="form-input resize-y min-h-[120px]"
                 required
                 aria-required="true"
                 aria-describedby="message-error"
               ></textarea>
-              <p id="message-error" class="form-error hidden" role="alert">メッセージを入力してください。</p>
+              <p id="message-error" class="form-error hidden" role="alert">{c.errorMessageField}</p>
             </div>
 
             <!-- Privacy notice -->
             <p class="text-white/35 text-xs leading-relaxed">
-              送信いただいた情報は、お問い合わせへの回答にのみ使用します。
-              第三者への提供は行いません。
+              {c.privacyNotice}
             </p>
 
             <!-- Submit -->
             <button
               type="submit"
               id="submit-btn"
+              data-label-send={c.submitLabel}
+              data-label-sending={c.submittingLabel}
               class="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-lg bg-primary hover:bg-primary-dark disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-sm transition-colors duration-200 shadow-lg shadow-primary/20"
             >
-              <span id="submit-label">送信する</span>
+              <span id="submit-label">{c.submitLabel}</span>
               <svg id="submit-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -250,7 +245,7 @@ const sns = [
         <!-- ── RIGHT: CONTACT INFO ─────────────────────── -->
         <aside class="space-y-5">
 
-          <h2 class="text-white font-black text-xl mb-6">連絡先情報</h2>
+          <h2 class="text-white font-black text-xl mb-6">{c.rightColTitle}</h2>
 
           <!-- Info cards -->
           {contactInfo.map(({ icon, label, value, note }) => (
@@ -270,7 +265,7 @@ const sns = [
 
           <!-- SNS card -->
           <div class="rounded-xl bg-white/[0.04] border border-white/10 p-5">
-            <p class="text-white/40 text-xs uppercase tracking-widest font-mono mb-4">SNS</p>
+            <p class="text-white/40 text-xs uppercase tracking-widest font-mono mb-4">{c.snsLabel}</p>
             <div class="flex items-center gap-3">
               {sns.map(({ label, href, icon }) => (
                 <a
@@ -282,8 +277,6 @@ const sns = [
               ))}
             </div>
           </div>
-
-         
 
         </aside>
 
@@ -361,6 +354,10 @@ const sns = [
 
   if (!form) throw new Error("contact-form not found");
 
+  // Read labels from data attributes (set per language in markup)
+  const labelSend    = submitBtn?.dataset.labelSend    ?? "送信する";
+  const labelSending = submitBtn?.dataset.labelSending ?? "送信中...";
+
   // ── Validation rules ────────────────────────────────
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -418,7 +415,7 @@ const sns = [
   function setLoading(loading: boolean): void {
     if (!submitBtn || !submitLabel || !submitArrow || !submitSpinner) return;
     submitBtn.disabled = loading;
-    submitLabel.textContent = loading ? "送信中..." : "送信する";
+    submitLabel.textContent = loading ? labelSending : labelSend;
     submitArrow.classList.toggle("hidden", loading);
     submitSpinner.classList.toggle("hidden", !loading);
   }

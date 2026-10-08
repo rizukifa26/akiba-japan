@@ -1,62 +1,20 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { useTranslations, type Lang } from "../../i18n/translations";
 
-const history = [
-  {
-    era: "奈良時代〜",
-    label: "神田明神の創建",
-    desc: "神田の地に神田明神が創建され、地域の精神的な礎が築かれました。",
-  },
-  {
-    era: "江戸時代",
-    label: "職人の街",
-    desc: "神田は腕利きの職人たちが集まる活気ある町として栄えました。",
-  },
-  {
-    era: "昭和〜平成初期",
-    label: "電気街・PC街",
-    desc: "秋葉原は電気部品の街として発展し、後にパソコンの聖地へと進化しました。",
-  },
-  {
-    era: "現在",
-    label: "アニメ・ゲームの街",
-    desc: "世界中の観光客が訪れる、ポップカルチャーの国際的な発信地となっています。",
-  },
-];
+interface Props {
+  lang?: "ja" | "en";
+}
 
-const activities = [
-  {
-    icon: "📣",
-    title: "SNS発信",
-    desc: "秋葉原の魅力を国内外に発信するSNSコンテンツを制作・配信しています。",
-  },
-  {
-    icon: "📚",
-    title: "勉強会",
-    desc: "地域の歴史・文化・ビジネスに関する勉強会を定期的に開催しています。",
-  },
-  {
-    icon: "🌿",
-    title: "環境活動",
-    desc: "地域のゴミ拾いや美化活動を通じて、街のクリーンな環境づくりに貢献しています。",
-  },
-  {
-    icon: "🤝",
-    title: "国際交流",
-    desc: "海外からの観光客や在日外国人との交流を通じ、世界との相互理解を深めます。",
-  },
-];
+const { lang = "ja" } = Astro.props;
+const t = useTranslations(lang);
+const a = t.about;
 
-const chihouServices = [
-  { num: "01", title: "地酒・特産品のPR", desc: "地域の地酒、食品、農産物、工芸品などを秋葉原で紹介。" },
-  { num: "02", title: "地方マルシェの開催", desc: "地域事業者を秋葉原に招き、特産品販売・観光PR・交流イベントを開催。" },
-  { num: "03", title: "自治体・観光PR", desc: "自治体や観光協会と連携し、秋葉原を活用した地域PR・観光振興を実施。" },
-  { num: "04", title: "秋葉原の店舗・企業との連携", desc: "秋葉原の飲食店・店舗・企業などと地域事業者をつなぎ、コラボレーションを創出。" },
-  { num: "05", title: "インバウンドへの情報発信", desc: "世界から人が集まる秋葉原を活用し、地方の魅力を国内外の観光客へ発信。" },
-];
+const base = lang === "en" ? "/en" : "/jp";
+const href = (path: string) => `${base}${path}`;
 ---
 
-<BaseLayout title="組織について | AKIBA JAPAN" description="NPO法人国際AKIBA総合支援協会について。設立背景、ミッション、活動内容をご紹介します。">
+<BaseLayout title={a.pageTitle} description={a.pageDescription} lang={lang}>
 
   <!-- ─── HERO ─────────────────────────────────────────── -->
   <section class="relative overflow-hidden bg-black py-28">
@@ -66,14 +24,15 @@ const chihouServices = [
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center gap-2.5 mb-6">
         <span class="w-2 h-2 rounded-full bg-primary animate-pulse shrink-0" aria-hidden="true"></span>
-        <span class="text-primary font-mono text-xs tracking-[0.2em] uppercase">About Us</span>
+        <span class="text-primary font-mono text-xs tracking-[0.2em] uppercase">{a.eyebrow}</span>
       </div>
       <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight mb-6">
-        神田・秋葉原から、<br/><span class="text-primary">世界へ</span>発信する。
+        {a.heroTitle.split("\n").map((line, i) => (
+          i === 0 ? <>{line}<br/></> : <span class="text-primary">{line}</span>
+        ))}
       </h1>
       <p class="text-white/60 text-lg sm:text-xl leading-relaxed max-w-2xl">
-        NPO法人国際AKIBA総合支援協会は、この街で働き、集まり、生活する者たちが志を共にして生まれた組織です。
-        秋葉原の文化と歴史を大切にしながら、地域の未来を世界と共につくっていきます。
+        {a.heroBody}
       </p>
     </div>
   </section>
@@ -85,31 +44,31 @@ const chihouServices = [
 
         <!-- Left: text -->
         <div>
-          <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">Background</p>
+          <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">{a.historyEyebrow}</p>
           <h2 class="text-3xl sm:text-4xl font-black text-white mb-6 leading-tight">
-            秋葉原・神田の<br/>歩みと背景
+            {a.historyTitle.split("\n").map((line, i) => (
+              i === 0 ? <>{line}<br/></> : line
+            ))}
           </h2>
           <p class="text-white/60 leading-relaxed mb-5">
-            近年、海外から日本を訪れる観光客が増え、秋葉原は人気の観光地として常に上位に入っています。
-            今はアニメやゲームの街として知られていますが、昔はパソコンの街、その前は電気街として発展してきました。
+            {a.historyBody1}
           </p>
           <p class="text-white/60 leading-relaxed">
-            また、神田の地域全体を見ると、神田明神の歴史は奈良時代までさかのぼり、
-            江戸時代には職人の町として栄えた歴史があります。
+            {a.historyBody2}
           </p>
         </div>
 
         <!-- Right: timeline -->
         <div>
-          {history.map(({ era, label, desc }, i) => (
+          {a.history.map(({ era, label, desc }, i) => (
             <div class="flex gap-5">
               <div class="flex flex-col items-center">
                 <div class="w-3 h-3 rounded-full bg-primary shrink-0 mt-1.5"></div>
-                {i < history.length - 1 && (
+                {i < a.history.length - 1 && (
                   <div class="w-px flex-1 bg-white/10 my-2"></div>
                 )}
               </div>
-              <div class={i < history.length - 1 ? "pb-8" : ""}>
+              <div class={i < a.history.length - 1 ? "pb-8" : ""}>
                 <p class="text-primary font-mono text-xs tracking-widest uppercase mb-1">{era}</p>
                 <p class="text-white font-bold text-base mb-1">{label}</p>
                 <p class="text-white/50 text-sm leading-relaxed">{desc}</p>
@@ -128,31 +87,30 @@ const chihouServices = [
       <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 items-start">
 
         <div>
-          <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">Our Story</p>
+          <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">{a.storyEyebrow}</p>
           <h2 class="text-3xl sm:text-4xl font-black text-black leading-tight">
-            私たちが<br/>目指すもの
+            {a.storyTitle.split("\n").map((line, i) => (
+              i === 0 ? <>{line}<br/></> : line
+            ))}
           </h2>
         </div>
 
         <div class="flex flex-col gap-5">
           <p class="text-black/65 text-lg leading-relaxed">
-            私たちはこの神田・秋葉原で働き、集まり、生活する者として、この街の魅力をもっと高め、
-            世界に発信しながら発展させたいと考えています。歴史や文化を学び、地域の行事に参加し、
-            環境活動や新しい働き方にも挑戦しています。
+            {a.storyBody1}
           </p>
           <p class="text-black/65 text-lg leading-relaxed">
-            2024年ごろから、同じ志を持つメンバーが集まり、SNSでの発信、勉強会、ゴミ拾いなどを行ってきました。
-            今後も活動を続け、観光や経済への貢献だけでなく、世界との相互理解にも役立ちたいと思っています。
+            {a.storyBody2}
           </p>
           <p class="text-black/65 text-lg leading-relaxed">
-            さらに、多くの人に参加してもらい、信頼を得ながら活動を広げていくため、NPO法人を設立することにしました。
+            {a.storyBody3}
           </p>
 
           <!-- Established badge -->
           <div class="mt-4 inline-flex items-center gap-3 border border-black/10 rounded-xl px-5 py-3 w-fit bg-white shadow-sm">
             <span class="text-primary font-mono font-bold text-2xl leading-none">2024</span>
             <div class="w-px h-8 bg-black/10"></div>
-            <span class="text-black/60 text-sm leading-tight">NPO法人<br/>設立</span>
+            <span class="text-black/60 text-sm leading-tight whitespace-pre-line">{a.storyBadge}</span>
           </div>
         </div>
 
@@ -165,12 +123,12 @@ const chihouServices = [
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
       <div class="mb-14">
-        <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">Activities</p>
-        <h2 class="text-3xl sm:text-4xl font-black text-white">主な活動内容</h2>
+        <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">{a.activitiesEyebrow}</p>
+        <h2 class="text-3xl sm:text-4xl font-black text-white">{a.activitiesTitle}</h2>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {activities.map(({ icon, title, desc }) => (
+        {a.activities.map(({ icon, title, desc }) => (
           <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/[0.08] hover:border-white/20 hover:-translate-y-1 transition-all duration-300">
             <div class="text-3xl mb-4">{icon}</div>
             <h3 class="text-white font-bold text-lg mb-2">{title}</h3>
@@ -183,11 +141,11 @@ const chihouServices = [
       <div class="mt-5 bg-white/5 border border-primary/20 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-start gap-6 hover:bg-white/[0.08] hover:border-primary/40 transition-all duration-300">
         <div class="text-4xl shrink-0">🗾</div>
         <div class="flex-1">
-          <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase font-bold mb-2">New Initiative</p>
-          <h3 class="text-white font-bold text-xl mb-2">地方連携</h3>
-          <p class="text-white/50 text-sm leading-relaxed mb-4">全国の地方自治体・観光協会・酒蔵・農家・地域企業などをつなぎ、地域の「食・酒・文化・観光・人」を秋葉原から発信する取り組みを進めています。</p>
+          <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase font-bold mb-2">{a.chihouNewInitiative}</p>
+          <h3 class="text-white font-bold text-xl mb-2">{a.chihouTitle2}</h3>
+          <p class="text-white/50 text-sm leading-relaxed mb-4">{a.chihouDesc}</p>
           <a href="#chihou" class="inline-flex items-center gap-2 text-primary text-sm font-semibold hover:gap-3 transition-all duration-200">
-            詳しく見る
+            {a.chihouDetailLink}
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -203,19 +161,18 @@ const chihouServices = [
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
       <div class="mb-14">
-        <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">Regional Collaboration</p>
+        <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">{a.chihouEyebrow2}</p>
         <h2 class="text-3xl sm:text-4xl font-black text-white leading-tight mb-5">
-          地方と秋葉原をつなぐ。
+          {a.chihouSectionTitle}
         </h2>
         <p class="text-white/60 text-base sm:text-lg leading-relaxed max-w-2xl">
-          AKIBA JAPANは、秋葉原と全国の地方自治体・観光協会・酒蔵・農家・地域企業などをつなぎ、
-          地域の「食・酒・文化・観光・人」を秋葉原から発信する取り組みを進めています。
+          {a.chihouSectionBody}
         </p>
       </div>
 
       <!-- 5 capabilities -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-14">
-        {chihouServices.map(({ num, title, desc }) => (
+        {a.chihouServices.map(({ num, title, desc }) => (
           <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/[0.08] transition-colors duration-200">
             <span class="text-primary font-mono text-xs font-bold tracking-widest block mb-3">{num}</span>
             <h3 class="text-white font-bold text-base mb-2">{title}</h3>
@@ -225,18 +182,15 @@ const chihouServices = [
       </div>
 
       <!-- Event ideas -->
-      <h3 class="text-white font-black text-xl mb-6">こんな企画ができます</h3>
+      <h3 class="text-white font-black text-xl mb-6">{a.plansTitle}</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-14">
-        <div class="border border-white/10 bg-white/5 rounded-2xl p-6">
-          <p class="text-primary font-mono text-xs font-bold tracking-widest mb-3">PLAN 01</p>
-          <h4 class="text-white font-bold text-lg mb-2">全国地酒 × AKIBA</h4>
-          <p class="text-white/50 text-sm leading-relaxed">全国の酒蔵・地酒を秋葉原で紹介。地域ごとの地酒をテーマにしたPRイベントや、秋葉原の店舗とのコラボレーションなどを企画します。</p>
-        </div>
-        <div class="border border-white/10 bg-white/5 rounded-2xl p-6">
-          <p class="text-primary font-mono text-xs font-bold tracking-widest mb-3">PLAN 02</p>
-          <h4 class="text-white font-bold text-lg mb-2">AKIBA 地方マルシェ</h4>
-          <p class="text-white/50 text-sm leading-relaxed">地域の特産品・観光・文化を、秋葉原でまるごとPR。販売 × 観光PR × 地域交流 × 情報発信 を一つのイベントに。</p>
-        </div>
+        {a.plans.map(({ label, title, desc }) => (
+          <div class="border border-white/10 bg-white/5 rounded-2xl p-6">
+            <p class="text-primary font-mono text-xs font-bold tracking-widest mb-3">{label}</p>
+            <h4 class="text-white font-bold text-lg mb-2">{title}</h4>
+            <p class="text-white/50 text-sm leading-relaxed">{desc}</p>
+          </div>
+        ))}
       </div>
 
       <!-- CTA -->
@@ -247,16 +201,16 @@ const chihouServices = [
           rel="noopener"
           class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold text-sm transition-colors duration-200 shadow-lg shadow-primary/20"
         >
-          フライヤーを見る (PDF)
+          {a.flyerCTA}
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M6 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1v-3M10 2h4v4M8 8l6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </a>
         <a
-          href="/contact"
+          href={href("/contact")}
           class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg border border-white/30 hover:border-white/60 hover:bg-white/5 text-white font-semibold text-sm transition-colors duration-200"
         >
-          お問い合わせ・ご相談
+          {a.contactCTA}
         </a>
       </div>
 
@@ -269,29 +223,30 @@ const chihouServices = [
     <div class="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-black/10 translate-y-1/2 -translate-x-1/4" aria-hidden="true"></div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-      <p class="text-white/70 font-mono text-xs tracking-[0.2em] uppercase mb-5">Join Us</p>
+      <p class="text-white/70 font-mono text-xs tracking-[0.2em] uppercase mb-5">{a.ctaEyebrow}</p>
       <h2 class="text-3xl sm:text-4xl font-black text-white leading-tight mb-5">
-        一緒に秋葉原を<br/>盛り上げましょう。
+        {a.ctaTitle.split("\n").map((line, i) => (
+          i === 0 ? <>{line}<br/></> : line
+        ))}
       </h2>
       <p class="text-white/75 text-lg max-w-xl mx-auto mb-10 leading-relaxed text-balance">
-        個人・店舗・法人、どなたでも参加できます。
-        あなたの力で秋葉原の未来をつくる第一歩を。
+        {a.ctaBody}
       </p>
       <div class="flex flex-wrap justify-center gap-4">
         <a
-          href="/join"
+          href={href("/join")}
           class="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-white text-primary hover:bg-white/90 font-bold text-sm transition-colors duration-200 shadow-lg"
         >
-          会員として参加する
+          {a.ctaJoin}
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </a>
         <a
-          href="/contact"
+          href={href("/contact")}
           class="inline-flex items-center gap-2 px-8 py-4 rounded-lg border-2 border-white/60 hover:border-white hover:bg-white/10 text-white font-bold text-sm transition-colors duration-200"
         >
-          お問い合わせ
+          {a.ctaContact}
         </a>
       </div>
     </div>

@@ -1,104 +1,37 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { useTranslations, type Lang } from "../../i18n/translations";
 
-const plans = [
-  {
-    id: "individual",
-    icon: "👤",
-    title: "一般会員",
-    description:
-      "秋葉原のコミュニティに参加したい個人の方向けプランです。AKIBA COINの優待購入や会員限定イベントへの参加権など、街を楽しむための特典が揃っています。",
-    fee: "年会費 1,000円〜",
-    feeNote: "※入会金無料",
-    cta: "一般会員で申し込む",
-    href: "https://forms.gle/Bs2KYibtv9i7X6T67",
-    featured: false,
-  },
-  {
-    id: "corporate",
-    icon: "🏢",
-    title: "団体法人会員",
-    description:
-      "秋葉原で活動する企業・団体・店舗向けのプランです。加盟店としてAKIBA COINを導入し、AKIBA JAPANのプロモーション活動や観光客向け施策に参加できます。",
-    fee: "年会費 10,000円",
-    feeNote: "※規模により相談可",
-    cta: "団体法人で申し込む",
-    href: "https://forms.gle/7YqweJYUhigZS9qQ8",
-    featured: true,
-  },
-];
+interface Props {
+  lang?: "ja" | "en";
+}
 
-const steps = [
-  {
-    number: "01",
-    title: "フォームを送信",
-    desc: "上記のGoogleフォームに必要事項を入力して送信します。",
-  },
-  {
-    number: "02",
-    title: "事務局より連絡",
-    desc: "通常3〜5営業日以内に、登録メールアドレスへ確認メールをお送りします。",
-  },
-  {
-    number: "03",
-    title: "年会費のお支払い",
-    desc: "Googleフォーム記載の口座へ年会費をお支払いください。",
-  },
-  {
-    number: "04",
-    title: "会員証の発行",
-    desc: "お支払い確認後、デジタル会員証とAKIBA COINの購入案内をお送りします。",
-  },
-];
+const { lang = "ja" } = Astro.props;
+const t = useTranslations(lang);
+const j = t.join;
 
-const benefits = [
-  {
-    icon: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke="#e8546a" stroke-width="1.4"/><text x="10" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#e8546a" font-family="monospace">AC</text></svg>`,
-    title: "Akiba Coin 先行販売",
-    desc: "通常より2枚多い先行販売プランを会員価格で購入できます。",
-  },
-  {
-    icon: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2 6h6l-5 3.5 2 6L10 14l-5 3.5 2-6L2 8h6z" stroke="#e8546a" stroke-width="1.4" stroke-linejoin="round"/></svg>`,
-    title: "イベント優先参加",
-    desc: "AKIBA JAPAN主催イベントへの先行申し込みと会員限定枠が利用できます。",
-  },
-  {
-    icon: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4h12v8a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" stroke="#e8546a" stroke-width="1.4"/><path d="M8 14v3M12 14v3M6 17h8" stroke="#e8546a" stroke-width="1.4" stroke-linecap="round"/></svg>`,
-    title: "加盟店全店でコイン使用可",
-    desc: "取得したAKIBA COINをすべての加盟店舗でそのままご利用いただけます。",
-  },
-  {
-    icon: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="#e8546a" stroke-width="1.4"/><path d="M3 18c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="#e8546a" stroke-width="1.4" stroke-linecap="round"/></svg>`,
-    title: "コミュニティアクセス",
-    desc: "会員専用のオンライングループに参加し、秋葉原の最新情報を優先受信できます。",
-  },
-  {
-    icon: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="2" stroke="#e8546a" stroke-width="1.4"/><path d="M3 8h14M7 4V2M13 4V2" stroke="#e8546a" stroke-width="1.4" stroke-linecap="round"/></svg>`,
-    title: "ニュース発信",
-    desc: "秋葉原のイベント情報・加盟店ニュースを定期的にお届けします。",
-  },
-  {
-    icon: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L2 7v11h5v-5h6v5h5V7L10 2z" stroke="#e8546a" stroke-width="1.4" stroke-linejoin="round"/></svg>`,
-    title: "観光案内の優待",
-    desc: "AKIBA JAPAN提携施設での観光案内・体験プログラムを会員価格で利用できます。",
-  },
+const base = lang === "en" ? "/en" : "/jp";
+const href = (path: string) => `${base}${path}`;
+
+const benefitIcons = [
+  `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.5" stroke="#e8546a" stroke-width="1.4"/><text x="10" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#e8546a" font-family="monospace">AC</text></svg>`,
+  `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2 6h6l-5 3.5 2 6L10 14l-5 3.5 2-6L2 8h6z" stroke="#e8546a" stroke-width="1.4" stroke-linejoin="round"/></svg>`,
+  `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4h12v8a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" stroke="#e8546a" stroke-width="1.4"/><path d="M8 14v3M12 14v3M6 17h8" stroke="#e8546a" stroke-width="1.4" stroke-linecap="round"/></svg>`,
+  `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="#e8546a" stroke-width="1.4"/><path d="M3 18c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="#e8546a" stroke-width="1.4" stroke-linecap="round"/></svg>`,
+  `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="2" stroke="#e8546a" stroke-width="1.4"/><path d="M3 8h14M7 4V2M13 4V2" stroke="#e8546a" stroke-width="1.4" stroke-linecap="round"/></svg>`,
+  `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L2 7v11h5v-5h6v5h5V7L10 2z" stroke="#e8546a" stroke-width="1.4" stroke-linejoin="round"/></svg>`,
 ];
 ---
 
-<BaseLayout
-  title="会員申し込み | AKIBA JAPAN"
-  description="AKIBA JAPANの会員申し込みページ。一般会員（年会費1,000円〜）と団体法人会員（年会費10,000円〜）の2プランをご用意しています。"
->
+<BaseLayout title={j.pageTitle} description={j.pageDescription} lang={lang}>
 
   <!-- ─── HEADER ─────────────────────────────────────── -->
   <section class="bg-black border-b border-white/10 py-16 sm:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-4">Join Us</p>
-      <h1 class="text-4xl sm:text-5xl font-black text-white mb-5 leading-tight">会員申し込み</h1>
+      <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-4">{j.eyebrow}</p>
+      <h1 class="text-4xl sm:text-5xl font-black text-white mb-5 leading-tight">{j.title}</h1>
       <p class="text-white/55 text-lg max-w-2xl leading-relaxed">
-        AKIBA JAPANの会員になって、秋葉原コミュニティの一員として
-        AKIBA　COINやイベントを通じた街の魅力をお楽しみください。
-        個人・法人どちらでも参加できます。
+        {j.subtitle}
       </p>
     </div>
   </section>
@@ -108,14 +41,14 @@ const benefits = [
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
-        {plans.map(({ id, icon, title, description, fee, feeNote, cta, href, featured }) => (
+        {j.plans.map(({ id, icon, title, description, fee, feeNote, cta, href: planHref, featured }) => (
           <div class={`relative ${featured ? "pt-5" : ""}`}>
 
             <!-- Featured badge (overflows top) -->
             {featured && (
               <div class="absolute top-0 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap">
                 <span class="inline-flex items-center gap-1.5 bg-primary text-white text-xs font-bold tracking-wider px-4 py-1.5 rounded-full shadow-lg shadow-primary/30">
-                  法人・店舗向け
+                  {j.featuredBadge}
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">
                     <path d="M5 1l.927 1.878 2.073.302-1.5 1.46.354 2.065L5 5.75l-1.854.955.354-2.065L2 3.18l2.073-.302z"/>
                   </svg>
@@ -145,14 +78,14 @@ const benefits = [
 
               <!-- Fee -->
               <div class={`rounded-xl px-5 py-4 ${featured ? "bg-black/30" : "bg-white/5"}`}>
-                <p class="text-white/40 text-xs font-mono uppercase tracking-widest mb-1">年会費</p>
+                <p class="text-white/40 text-xs font-mono uppercase tracking-widest mb-1">{j.annualFeeLabel}</p>
                 <p class="text-white font-black text-xl font-mono">{fee}</p>
                 <p class="text-white/35 text-xs mt-1">{feeNote}</p>
               </div>
 
               <!-- CTA -->
               <a
-                href={href}
+                href={planHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 class={`inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-lg font-bold text-sm transition-all duration-200 ${
@@ -160,7 +93,7 @@ const benefits = [
                     ? "bg-primary hover:bg-primary-dark text-white shadow-md shadow-primary/25"
                     : "border border-white/25 hover:border-white/50 hover:bg-white/5 text-white"
                 }`}
-                aria-label={`${cta}（外部サイトが開きます）`}
+                aria-label={`${cta}`}
               >
                 {cta}
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -174,7 +107,7 @@ const benefits = [
                   <path d="M4.5 2H2a1 1 0 00-1 1v6a1 1 0 001 1h6a1 1 0 001-1V6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
                   <path d="M7 1h3v3M10 1L6 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                Googleフォームが開きます
+                {j.googleFormNote}
               </p>
 
             </div>
@@ -185,7 +118,7 @@ const benefits = [
     </div>
   </section>
 
-  <!-- ─── INFO BOX: 申し込み後について ─────────────────── -->
+  <!-- ─── INFO BOX: Steps ─────────────────────── -->
   <section class="py-16 bg-[#0a0a0a] border-t border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -200,13 +133,13 @@ const benefits = [
                 <path d="M8 5v3.5M8 11v.5" stroke="#e8546a" stroke-width="1.4" stroke-linecap="round"/>
               </svg>
             </div>
-            <h2 class="text-white font-black text-lg">申し込み後について</h2>
+            <h2 class="text-white font-black text-lg">{j.stepsTitle}</h2>
           </div>
 
           <!-- Steps -->
           <div class="px-8 py-7">
             <ol class="space-y-6" role="list">
-              {steps.map(({ number, title, desc }) => (
+              {j.steps.map(({ number, title, desc }) => (
                 <li class="flex items-start gap-5">
                   <div class="shrink-0 w-9 h-9 rounded-full border border-primary/40 bg-primary/10 flex items-center justify-center">
                     <span class="font-mono text-xs font-bold text-primary">{number}</span>
@@ -221,9 +154,9 @@ const benefits = [
 
             <div class="mt-7 pt-6 border-t border-white/10">
               <p class="text-white/40 text-xs leading-relaxed">
-                ご不明な点は
-                <a href="/contact" class="text-primary hover:underline underline-offset-2">お問い合わせページ</a>
-                よりお気軽にご連絡ください。
+                {j.stepsContactNote}
+                <a href={href("/contact")} class="text-primary hover:underline underline-offset-2">{j.stepsContactLinkLabel}</a>
+                {j.stepsContactNoteAfter}
               </p>
             </div>
           </div>
@@ -239,16 +172,16 @@ const benefits = [
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
       <div class="mb-12">
-        <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">Member Benefits</p>
-        <h2 class="text-3xl sm:text-4xl font-black text-white">会員特典</h2>
+        <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-3">{j.benefitsEyebrow}</p>
+        <h2 class="text-3xl sm:text-4xl font-black text-white">{j.benefitsTitle}</h2>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {benefits.map(({ icon, title, desc }) => (
+        {j.benefits.map(({ title, desc }, idx) => (
           <div class="rounded-xl bg-white/[0.03] border border-white/10 hover:border-white/20 p-6 flex items-start gap-4 transition-colors duration-200 group">
             <div
               class="w-10 h-10 rounded-lg bg-primary/10 group-hover:bg-primary/15 flex items-center justify-center shrink-0 transition-colors duration-200"
-              set:html={icon}
+              set:html={benefitIcons[idx] ?? benefitIcons[0]}
               aria-hidden="true"
             />
             <div>
@@ -266,14 +199,14 @@ const benefits = [
   <section class="py-14 bg-[#0a0a0a] border-t border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
       <div>
-        <p class="text-white font-black text-xl mb-1">まずは気軽に問い合わせを</p>
-        <p class="text-white/45 text-sm">申し込み前のご質問もお気軽にどうぞ。</p>
+        <p class="text-white font-black text-xl mb-1">{j.ctaEyebrow}</p>
+        <p class="text-white/45 text-sm">{j.ctaBody}</p>
       </div>
       <a
-        href="/contact"
+        href={href("/contact")}
         class="shrink-0 inline-flex items-center gap-2 px-7 py-3.5 rounded-lg border border-white/25 hover:border-white/50 hover:bg-white/5 text-white font-semibold text-sm transition-colors duration-200"
       >
-        お問い合わせ
+        {j.ctaContact}
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>

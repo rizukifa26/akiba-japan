@@ -1,21 +1,26 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { useTranslations, type Lang } from "../../i18n/translations";
+
+interface Props {
+  lang?: "ja" | "en";
+}
+
+const { lang = "ja" } = Astro.props;
+const t = useTranslations(lang);
+const r = t.rules;
 
 const pdfPath = "/%E4%BC%9A%E5%93%A1%E8%A6%8F%E7%B4%84.pdf";
 ---
 
-<BaseLayout
-  title="会員規約 | AKIBA JAPAN"
-  description="NPO法人国際AKIBA総合支援協会の会員規約です。詳細はPDFをご確認ください。"
->
+<BaseLayout title={r.pageTitle} description={r.pageDescription} lang={lang}>
   <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-    <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-4">Membership Rules</p>
+    <p class="text-primary font-mono text-xs tracking-[0.2em] uppercase mb-4">{r.eyebrow}</p>
     <h1 class="text-4xl sm:text-5xl font-black text-white mb-5 leading-tight">
-      会員規約
+      {r.title}
     </h1>
     <p class="text-white/55 text-lg max-w-2xl leading-relaxed mb-10">
-      AKIBA JAPANへの加盟・ご利用にあたっての規約です。<br />
-      内容をご確認のうえ、同意いただいた上でご登録をお願いいたします。
+      {r.subtitle}
     </p>
 
     <!-- PDF download card -->
@@ -28,8 +33,8 @@ const pdfPath = "/%E4%BC%9A%E5%93%A1%E8%A6%8F%E7%B4%84.pdf";
         </svg>
       </div>
       <div class="flex-1 min-w-0">
-        <p class="text-white font-semibold text-sm mb-0.5">会員規約.pdf</p>
-        <p class="text-white/35 text-xs">会員規約の全文はこちらから</p>
+        <p class="text-white font-semibold text-sm mb-0.5">{r.pdfLabel}</p>
+        <p class="text-white/35 text-xs">{r.pdfDescription}</p>
       </div>
       <a
         href={pdfPath}
@@ -40,7 +45,7 @@ const pdfPath = "/%E4%BC%9A%E5%93%A1%E8%A6%8F%E7%B4%84.pdf";
           <path d="M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M2 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
-        ダウンロード
+        {r.downloadButton}
       </a>
     </div>
   </section>
