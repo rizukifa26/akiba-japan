@@ -224,14 +224,14 @@ export const translations = {
       events: [
         {
           id: "kanda-akimatsuri-2026-10",
-          status: "upcoming" as const,
+          status: "done" as const,
           category: "イベント",
           title: "神田ふれあい通り商店会による秋祭り",
           date: "2026年10月8日",
           location: "神田ふれあい通り周辺",
-          cover: "/akibajapan2/akimaturi.png",
-          summary: "10月8日、神田ふれあい通り周辺で秋祭りが開催されます。",
-          body: ["2026年10月8日、神田ふれあい通り周辺で秋祭りが開催されます。"],
+          cover: "/akibajapanibento/IMG_3499.jpeg",
+          summary: "10月8日、神田ふれあい通り周辺で秋祭りが開催されました。",
+          body: ["2026年10月8日、神田ふれあい通り周辺で秋祭りが開催されました。"],
         },
         {
           id: "mosque-traffic-2026-03",
