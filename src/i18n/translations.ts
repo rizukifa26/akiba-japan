@@ -598,14 +598,14 @@ export const translations = {
       events: [
         {
           id: "kanda-akimatsuri-2026-10",
-          status: "upcoming" as const,
+          status: "done" as const,
           category: "Event",
           title: "Autumn Festival by Kanda Fureai Street Shopping Association",
           date: "October 8, 2026",
           location: "Around Kanda Fureai Street",
-          cover: "/akibajapan2/akimaturi.png",
-          summary: "On October 8th, an autumn festival will be held around Kanda Fureai Street.",
-          body: ["An autumn festival will be held around Kanda Fureai Street on October 8, 2026."],
+          cover: "/akibajapanibento/IMG_3499.jpeg",
+          summary: "On October 8th, an autumn festival was held around Kanda Fureai Street.",
+          body: ["An autumn festival was held around Kanda Fureai Street on October 8, 2026."],
         },
         {
           id: "mosque-traffic-2026-03",
